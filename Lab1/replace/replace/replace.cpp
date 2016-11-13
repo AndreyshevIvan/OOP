@@ -1,19 +1,22 @@
 #include "stdafx.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
-const int ARGUMENTS_COUNT = 5;
+static const int ARGUMENTS_COUNT = 5;
 
 using namespace std;
 
-bool checkArgumentsCount(int &argc);
-bool checkInputFile(char* argv[], ifstream &inputFile);
-bool checkOutputFile(char* argv[], ifstream &outputFile);
-bool checkSearchStr(string &searchStr);
+bool CheckArgumentsCount(int &argc);
+bool CheckInputFile(char* argv[], ifstream &inputFile);
+bool CheckOutputFile(char* argv[], ifstream &outputFile);
+bool CheckSearchStr(string &searchStr);
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr, string &newStr);
+string ReplaceStrings(string &currentStr, string &searchStr, string &subStr);
 
 int main(int argc, char* argv[])
 {
-	if (!checkArgumentsCount(argc))
+	if (!CheckArgumentsCount(argc))
 	{
 		cout << "Invalid arguments count" "\n";
 		cout << "Usage: replace.exe <input file> <output file> <search string> <replace string>" "\n";
@@ -23,24 +26,27 @@ int main(int argc, char* argv[])
 	ifstream inputFile(argv[1]);
 	ofstream outputFile(argv[2]);
 
-	if (!checkInputFile(argv, inputFile))
+	if (!CheckInputFile(argv, inputFile))
 		return EXIT_FAILURE;
 
-	if (!checkOutputFile(argv, inputFile))
+	if (!CheckOutputFile(argv, inputFile))
 		return EXIT_FAILURE;
 
 	string searchStr = argv[3];
 	string newStr = argv[4];
 
-	if (!checkSearchStr(searchStr))
+
+	if (!CheckSearchStr(searchStr))
 		return EXIT_FAILURE;
+
+	EnterReplacing(inputFile, outputFile, searchStr, newStr);
 
 	inputFile.close();
 	outputFile.close();
     return 0;
 }
 
-bool checkArgumentsCount(int &argc)
+bool CheckArgumentsCount(int &argc)
 {
 	if (argc != ARGUMENTS_COUNT)
 		return false;
@@ -48,7 +54,7 @@ bool checkArgumentsCount(int &argc)
 	return true;
 }
 
-bool checkInputFile(char* argv[], ifstream &inputFile)
+bool CheckInputFile(char* argv[], ifstream &inputFile)
 {
 	if (!inputFile.is_open())
 	{
@@ -64,7 +70,7 @@ bool checkInputFile(char* argv[], ifstream &inputFile)
 	return true;
 }
 
-bool checkOutputFile(char* argv[], ifstream &outputFile)
+bool CheckOutputFile(char* argv[], ifstream &outputFile)
 {
 	if (!outputFile.is_open())
 	{
@@ -75,7 +81,7 @@ bool checkOutputFile(char* argv[], ifstream &outputFile)
 	return true;
 }
 
-bool checkSearchStr(string &searchStr)
+bool CheckSearchStr(string &searchStr)
 {
 	if (searchStr.size() == 0)
 	{
@@ -84,4 +90,40 @@ bool checkSearchStr(string &searchStr)
 	}
 
 	return true;
+}
+
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr, string &newStr)
+{
+	string currentStr;
+
+	while (getline(inputFile, currentStr))
+	{
+		if (!currentStr.empty())
+		{
+			currentStr = ReplaceStrings(currentStr, searchStr, newStr);
+			outputFile << currentStr;
+		}
+		outputFile << "\n";
+	}
+}
+
+string ReplaceStrings(string &currentStr, string &searchStr, string &newStr)
+{
+	const size_t searchStrLen = searchStr.length();
+
+	string resultStr = "";
+	size_t initialSearchPos = 0;
+	size_t searchStrPos = currentStr.find(searchStr, initialSearchPos);
+
+	while (searchStrPos != string::npos)
+	{
+		resultStr += currentStr.substr(initialSearchPos, searchStrPos - initialSearchPos);
+		cout << resultStr << "\n";
+		resultStr += newStr;
+		initialSearchPos = searchStrPos + searchStrLen;
+		searchStrPos = currentStr.find(searchStr, searchStrPos + searchStrLen);
+	}
+	resultStr += currentStr.substr(initialSearchPos);
+
+	return resultStr;
 }
