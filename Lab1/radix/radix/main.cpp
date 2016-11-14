@@ -13,6 +13,8 @@ bool CheckArgumentsCount(int& argc);
 bool CheckRadix(int& radix);
 int StringToInt(const string& str, int radix, bool& wasError);
 int CharToDigit(const char& ch);
+bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegative);
+bool CheckDigit(int& digit, int& radix);
 
 int main(int argc, char * argv[])
 {
@@ -36,8 +38,10 @@ int main(int argc, char * argv[])
 	}
 
 	int valueInDec = StringToInt(value, sourceRadix, wasError);
-	cout << valueInDec << "\n";
+	if (wasError)
+		return EXIT_FAILURE;
 
+	cout << valueInDec << "\n";
 
     return 0;
 }
@@ -70,26 +74,32 @@ int StringToInt(const string& str, int radix, bool& wasError)
 {
 	int result = 0;
 	int digit = 0;
+	size_t digitPos = 0;
+	const bool isNumberNegative = (str[0] == '-');
 
-	cout << str << "\n";
+	if (isNumberNegative)
+		digitPos = 1;
 
-	if (str[0] == '-')
+	for (digitPos; digitPos < str.length(); digitPos++)
 	{
-		for (size_t i = 1; i < str.length(); i++)
+		digit = CharToDigit(str[digitPos]);
+		if (!CheckDigit(digit, radix))
 		{
-			digit = CharToDigit(str[i]);
-			cout << i << " : " << digit << "\n";
-			result += digit * (int)pow(radix, str.length() - i - 1);
+			wasError = true;
+			return -1;
 		}
-		result = -result;
-	}
-	else
-	{
-		for (size_t i = 0; i < str.length(); i++)
+
+		const int addedValue = digit * (int)pow(radix, str.length() - digitPos - 1);
+		if (!CheckOverflow(result, addedValue, isNumberNegative))
 		{
-			digit = CharToDigit(str[i]);
-			result += digit * (int)pow(radix, str.length() - i - 1);
+			wasError = true;
+			return -1;
 		}
+
+		if (isNumberNegative)
+			result -= addedValue;
+		else
+			result += addedValue;
 	}
 
 	return result;
@@ -102,15 +112,34 @@ int CharToDigit(const char& ch)
 	if (ch >= '0' && ch <= '9')
 	{
 		result = (int)ch - '0';
-		cout << ch << " - " << result << "\n";
 	}
 	else if (ch > '9' && ch <= 'Z')
 	{
 		result = (int)ch - 'A' + 10;
-		cout << (int)ch << "\n";
-		cout << (int)'A' << "\n";
-		cout << ch << " - " << result << "\n";
 	}
 
 	return result;
+}
+
+bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegative)
+{
+	if (isNumberNegative)
+	{
+		if (result >= (INT_MIN + addedValue))
+			return true;
+	}
+	else if (result <= (INT_MAX - addedValue))
+			return true;
+
+	cout << "Overflow" "\n";
+	return false;
+}
+
+bool CheckDigit(int& digit, int& radix)
+{
+	if (digit >= 0 || digit < radix)
+		return true;
+
+	cout << "Invalid character for this notation" "\n";
+	return false;
 }
