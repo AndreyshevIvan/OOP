@@ -30,7 +30,7 @@ int main(int argc, char * argv[])
 	int sourceRadix = stoi(argv[1]);
 	int destenationRadix = stoi(argv[2]);
 
-	if (!CheckRadix(sourceRadix) && !CheckRadix(destenationRadix))
+	if (!CheckRadix(sourceRadix) || !CheckRadix(destenationRadix))
 		return 1;
 
 	const string value = argv[3];
@@ -68,14 +68,14 @@ bool CheckArgumentsCount(int& argc)
 
 bool CheckRadix(int& radix)
 {
-	if (radix < MIN_RADIX && radix > MAX_RADIX)
+	if (radix > MIN_RADIX && radix < MAX_RADIX)
 	{
-		cout << "Invalid notation value" "\n";
-		cout << "Radix should be in the range [2; 36]" "\n";
-		return false;
+		return true;
 	}
 	
-	return true;
+	cout << "Invalid notation value" "\n";
+	cout << "Radix should be in the range [2; 36]" "\n";
+	return false;
 }
 
 int StringToInt(const string& str, int radix, bool& wasError)
