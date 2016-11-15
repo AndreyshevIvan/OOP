@@ -126,11 +126,13 @@ string IntToString(int& value, int& radix, bool& wasError)
 	cout << "---IntToString---" << "\n";
 	string result = "";
 	string tempStr = "";
-	const bool isValueNegative = (value < 0);
+	const bool isNumberNegative = (value < 0);
 	int mod = 0;
 	int div = value;
-	if (isValueNegative)
+	if (isNumberNegative)
+	{
 		div = abs(div) - 1;
+	}
 	cout << "mod : " << mod << "\n";
 	cout << "div : " << div << "\n";
 
@@ -146,17 +148,22 @@ string IntToString(int& value, int& radix, bool& wasError)
 		cout << "result : " << result << "\n";
 	}
 	tempStr = result;
-	if (isValueNegative)
+	if (isNumberNegative)
 	{
 		result = "-";
-		result += DigitToChar(div + 1);
+		result += DigitToChar(div);
+		result += tempStr;
+		result[result.length() - 1] = char(result[result.length() - 1] + 1);
+		cout << "tempStr[tempStr.length()] + 1 : " << result[result.length() - 1] << "\n";
 	}
 	else
 	{
-		result += DigitToChar(div);
+		result = DigitToChar(div);
+		result += tempStr;
 	}
-	result += tempStr;
-		
+	cout << "result : " << result << "\n";
+	
+
 	return result;
 }
 
@@ -232,15 +239,15 @@ const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, 
 	if ((log(INT_MAX) / log(radix) >= digitOrder) && (INT_MAX / pow(radix, digitOrder <= digit)))
 	{
 		cout << "pow : " << pow(radix, digitOrder) << "\n";
+		cout << "digit : " << digit << "\n";
 		return digit * pow(radix, digitOrder);
 	}
 
-	cout << "Overflow" << "\n";
-	cout << "digit : " << digit << "\n";
-	cout << "radix : " << radix << "\n";
-	cout << "digitOrder : " << digitOrder << "\n";
-	cout << "log(INT_MAX) / log(radix) : " << log(INT_MAX) / log(radix) << "\n";
-	cout << "INT_MAX / digit : " << INT_MAX / digit << "\n";
+	//cout << "Overflow" << "\n";
+	//cout << "radix : " << radix << "\n";
+	//cout << "digitOrder : " << digitOrder << "\n";
+	//cout << "log(INT_MAX) / log(radix) : " << log(INT_MAX) / log(radix) << "\n";
+	//cout << "INT_MAX / digit : " << INT_MAX / digit << "\n";
 	wasError = true;
 	return 1;
 }
