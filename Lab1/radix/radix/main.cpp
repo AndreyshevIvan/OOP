@@ -243,11 +243,6 @@ const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, 
 		return digit * pow(radix, digitOrder);
 	}
 
-	//cout << "Overflow" << "\n";
-	//cout << "radix : " << radix << "\n";
-	//cout << "digitOrder : " << digitOrder << "\n";
-	//cout << "log(INT_MAX) / log(radix) : " << log(INT_MAX) / log(radix) << "\n";
-	//cout << "INT_MAX / digit : " << INT_MAX / digit << "\n";
 	wasError = true;
 	return 1;
 }
