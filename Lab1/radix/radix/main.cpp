@@ -42,6 +42,7 @@ int main(int argc, char * argv[])
 	}
 
 	int valueInDec = StringToInt(value, sourceRadix, wasError);
+	bool isValueNegative = (valueInDec < 0);
 	if (wasError)
 		return 1;
 
@@ -49,7 +50,10 @@ int main(int argc, char * argv[])
 	cout << "valueInDec : " << valueInDec << "\n";
 	string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
 	cout << "---main---" << "\n";
-	cout << "finalValue : " << valueInRadix << "\n";
+	if (isValueNegative)
+		cout << "finalValue : -" << valueInRadix << "\n";
+	else
+		cout << "finalValue : " << valueInRadix << "\n";
 
     return 0;
 }
@@ -128,11 +132,7 @@ string IntToString(int& value, int& radix, bool& wasError)
 	string tempStr = "";
 	const bool isNumberNegative = (value < 0);
 	int mod = 0;
-	int div = value;
-	if (isNumberNegative)
-	{
-		div = abs(div) - 1;
-	}
+	unsigned div = abs(value);
 	cout << "mod : " << mod << "\n";
 	cout << "div : " << div << "\n";
 
@@ -148,21 +148,10 @@ string IntToString(int& value, int& radix, bool& wasError)
 		cout << "result : " << result << "\n";
 	}
 	tempStr = result;
-	if (isNumberNegative)
-	{
-		result = "-";
-		result += DigitToChar(div);
-		result += tempStr;
-		result[result.length() - 1] = char(result[result.length() - 1] + 1);
-		cout << "tempStr[tempStr.length()] + 1 : " << result[result.length() - 1] << "\n";
-	}
-	else
-	{
-		result = DigitToChar(div);
-		result += tempStr;
-	}
+	result = DigitToChar(div);
+	result += tempStr;
+
 	cout << "result : " << result << "\n";
-	
 
 	return result;
 }
