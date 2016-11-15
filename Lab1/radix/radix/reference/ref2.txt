@@ -1,0 +1,2 @@
+Invalid notation value
+Radix should be in the range [2; 36]

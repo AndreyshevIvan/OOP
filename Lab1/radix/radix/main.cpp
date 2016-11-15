@@ -55,8 +55,8 @@ bool CheckArgumentsCount(int& argc)
 {
 	if (argc != ARGUMENTS_COUNT)
 	{
-		cout << "Invalid arguments count" "\n"; 
-		cout << "Usage: replace.exe <source notation> <destenation notation> <value>" "\n";
+		cout << "Invalid arguments count" "\n"
+			<< "Usage: replace.exe <source notation> <destenation notation> <value>" "\n";
 		return false;
 	}
 
@@ -67,8 +67,8 @@ bool CheckRadix(int& radix)
 {
 	if (radix < MIN_RADIX && radix > MAX_RADIX)
 	{
-		cout << "Invalid notation value" "\n";
-		cout << "Radix should be in the range [2; 36]" "\n";
+		cout << "Invalid notation value" "\n"
+			<< "Radix should be in the range [2; 36]" "\n";
 		return false;
 	}
 	
@@ -108,9 +108,13 @@ int StringToInt(const string& str, int radix, bool& wasError)
 		}
 
 		if (isNumberNegative)
+		{
 			result -= addedValue;
+		}
 		else
+		{
 			result += addedValue;
+		}
 	}
 
 	return result;
@@ -124,9 +128,7 @@ string IntToString(int& value, int& radix, bool& wasError)
 	int mod = 0;
 	int div = value;
 	if (isNumberNegative)
-	{
 		div = abs(div) - 1;
-	}
 
 	while (div >= radix)
 	{
@@ -136,6 +138,7 @@ string IntToString(int& value, int& radix, bool& wasError)
 		result = DigitToChar(mod);
 		result += tempStr;
 	}
+
 	tempStr = result;
 	if (isNumberNegative)
 	{
@@ -172,7 +175,6 @@ int CharToDigit(const char& ch)
 char DigitToChar(const int& digit)
 {
 	char result;
-	string testStr;
 
 	if (digit >= 0 && digit <= 9)
 	{
@@ -182,8 +184,6 @@ char DigitToChar(const int& digit)
 	{
 		result = char(digit + 'A' - 10);
 	}
-
-	testStr = result;
 
 	return result;
 }
@@ -198,7 +198,7 @@ bool CheckAdding(int& result, const int& addedValue, const bool& isNumberNegativ
 	else if (result <= (INT_MAX - addedValue))
 			return true;
 
-	cout << "Overflow" "\n";
+	cout << "Error: overflow" "\n";
 	return false;
 }
 
@@ -214,10 +214,9 @@ bool CheckDigit(int& digit, int& radix)
 const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, bool& wasError)
 {
 	if ((log(INT_MAX) / log(radix) >= digitOrder) && (INT_MAX / pow(radix, digitOrder <= digit)))
-	{
-		return digit * pow(radix, digitOrder);
-	}
+		return int(digit * pow(radix, digitOrder));
 
+	cout << "Error: overflow" "\n";
 	wasError = true;
 	return 1;
 }

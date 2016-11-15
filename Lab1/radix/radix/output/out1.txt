@@ -1,0 +1,2 @@
+Invalid arguments count
+Usage: replace.exe <source notation> <destenation notation> <value>
