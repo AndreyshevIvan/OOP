@@ -11,26 +11,27 @@ using namespace std;
 
 bool CheckArgumentsCount(int& argc);
 bool CheckRadix(int& radix);
-bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegative);
+bool CheckAdding(int& result, const int& addedValue, const bool& isNumberNegative);
 bool CheckDigit(int& digit, int& radix);
 
 int StringToInt(const string& str, int radix, bool& wasError);
 string IntToString(int& value, int& radix, bool& wasError);
 int CharToDigit(const char& ch);
 char DigitToChar(const int& digit);
+const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, bool& wasError);
 
 int main(int argc, char * argv[])
 {
 	bool wasError = false;
 
 	if (!CheckArgumentsCount(argc))
-		return EXIT_FAILURE;
+		return 1;
 
 	int sourceRadix = stoi(argv[1]);
 	int destenationRadix = stoi(argv[2]);
 
-	if (!CheckRadix(sourceRadix) || !CheckRadix(destenationRadix))
-		return EXIT_FAILURE;
+	if (!CheckRadix(sourceRadix) && !CheckRadix(destenationRadix))
+		return 1;
 
 	const string value = argv[3];
 
@@ -42,13 +43,13 @@ int main(int argc, char * argv[])
 
 	int valueInDec = StringToInt(value, sourceRadix, wasError);
 	if (wasError)
-		return EXIT_FAILURE;
+		return 1;
 
 	cout << "---main---" << "\n";
 	cout << "valueInDec : " << valueInDec << "\n";
-	string finalValue = IntToString(valueInDec, destenationRadix, wasError);
+	string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
 	cout << "---main---" << "\n";
-	cout << "finalValue : " << finalValue << "\n";
+	cout << "finalValue : " << valueInRadix << "\n";
 
     return 0;
 }
@@ -67,7 +68,7 @@ bool CheckArgumentsCount(int& argc)
 
 bool CheckRadix(int& radix)
 {
-	if (radix < MIN_RADIX || radix > MAX_RADIX)
+	if (radix < MIN_RADIX && radix > MAX_RADIX)
 	{
 		cout << "Invalid notation value" "\n";
 		cout << "Radix should be in the range [2; 36]" "\n";
@@ -83,9 +84,12 @@ int StringToInt(const string& str, int radix, bool& wasError)
 	int digit = 0;
 	size_t digitPos = 0;
 	const bool isNumberNegative = (str[0] == '-');
-
+	
 	if (isNumberNegative)
+	{
 		digitPos = 1;
+		std::cout << "minus" << std::endl;
+	}
 
 	for (digitPos; digitPos < str.length(); digitPos++)
 	{
@@ -94,14 +98,21 @@ int StringToInt(const string& str, int radix, bool& wasError)
 		if (!CheckDigit(digit, radix))
 		{
 			wasError = true;
-			return -1;
+			return 1;
 		}
 
-		const int addedValue = digit * (int)pow(radix, str.length() - digitPos - 1);
-		if (!CheckOverflow(result, addedValue, isNumberNegative))
+		const size_t digitOrder = str.length() - digitPos - 1;
+		const int addedValue = calculateAddedValue(digit, radix, digitOrder, wasError);
+
+		if (wasError)
+			return 1;
+
+		cout << "addedValue : " << addedValue << "\n";
+
+		if (!CheckAdding(result, addedValue, isNumberNegative))
 		{
 			wasError = true;
-			return -1;
+			return 1;
 		}
 
 		if (isNumberNegative)
@@ -118,8 +129,8 @@ string IntToString(int& value, int& radix, bool& wasError)
 	cout << "---IntToString---" << "\n";
 	string result = "";
 	string tempStr = "";
-	int mod = 0; // остаток от деления
-	int div = value; // частное
+	int mod = 0;
+	int div = value;
 	int testValue = (abs(value));
 	cout << "mod : " << mod << "\n";
 	cout << "div : " << div << "\n";
@@ -127,8 +138,8 @@ string IntToString(int& value, int& radix, bool& wasError)
 
 	while (div >= radix)
 	{
-		mod = div % radix; // остаток
-		div = (div - mod) / radix; // частное
+		mod = div % radix;
+		div = (div - mod) / radix;
 		tempStr = result;
 		result = DigitToChar(mod);
 		result += tempStr;
@@ -183,7 +194,7 @@ char DigitToChar(const int& digit)
 	return result;
 }
 
-bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegative)
+bool CheckAdding(int& result, const int& addedValue, const bool& isNumberNegative)
 {
 	if (isNumberNegative)
 	{
@@ -207,4 +218,23 @@ bool CheckDigit(int& digit, int& radix)
 
 	cout << "Invalid character for this notation" "\n";
 	return false;
+}
+
+const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, bool& wasError)
+{
+	cout << "---calculateAddedValue---" "\n";
+	if ((log(INT_MAX) / log(radix) >= digitOrder) && (INT_MAX / pow(radix, digitOrder <= digit)))
+	{
+		cout << "pow : " << pow(radix, digitOrder) << "\n";
+		return digit * pow(radix, digitOrder);
+	}
+
+	cout << "Overflow" << "\n";
+	cout << "digit : " << digit << "\n";
+	cout << "radix : " << radix << "\n";
+	cout << "digitOrder : " << digitOrder << "\n";
+	cout << "log(INT_MAX) / log(radix) : " << log(INT_MAX) / log(radix) << "\n";
+	cout << "INT_MAX / digit : " << INT_MAX / digit << "\n";
+	wasError = true;
+	return 1;
 }
