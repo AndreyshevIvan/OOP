@@ -11,10 +11,13 @@ using namespace std;
 
 bool CheckArgumentsCount(int& argc);
 bool CheckRadix(int& radix);
-int StringToInt(const string& str, int radix, bool& wasError);
-int CharToDigit(const char& ch);
 bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegative);
 bool CheckDigit(int& digit, int& radix);
+
+int StringToInt(const string& str, int radix, bool& wasError);
+string IntToString(int& value, int& radix, bool& wasError);
+int CharToDigit(const char& ch);
+char DigitToChar(const int& digit);
 
 int main(int argc, char * argv[])
 {
@@ -41,7 +44,11 @@ int main(int argc, char * argv[])
 	if (wasError)
 		return EXIT_FAILURE;
 
-	cout << valueInDec << "\n";
+	cout << "---main---" << "\n";
+	cout << "valueInDec : " << valueInDec << "\n";
+	string finalValue = IntToString(valueInDec, destenationRadix, wasError);
+	cout << "---main---" << "\n";
+	cout << "finalValue : " << finalValue << "\n";
 
     return 0;
 }
@@ -83,6 +90,7 @@ int StringToInt(const string& str, int radix, bool& wasError)
 	for (digitPos; digitPos < str.length(); digitPos++)
 	{
 		digit = CharToDigit(str[digitPos]);
+
 		if (!CheckDigit(digit, radix))
 		{
 			wasError = true;
@@ -105,9 +113,39 @@ int StringToInt(const string& str, int radix, bool& wasError)
 	return result;
 }
 
+string IntToString(int& value, int& radix, bool& wasError)
+{
+	cout << "---IntToString---" << "\n";
+	string result = "";
+	string tempStr = "";
+	int mod = 0; // остаток от деления
+	int div = value; // частное
+	int testValue = (abs(value));
+	cout << "mod : " << mod << "\n";
+	cout << "div : " << div << "\n";
+	cout << "testValue : " << testValue << "\n";
+
+	while (div >= radix)
+	{
+		mod = div % radix; // остаток
+		div = (div - mod) / radix; // частное
+		tempStr = result;
+		result = DigitToChar(mod);
+		result += tempStr;
+		cout << "mod : " << mod << "\n";
+		cout << "div : " << div << "\n";
+		cout << "result : " << result << "\n";
+	}
+	tempStr = result;
+	result = DigitToChar(div);
+	result += tempStr;
+		
+	return result;
+}
+
 int CharToDigit(const char& ch)
 {
-	int result;
+	int result = -1;
 
 	if (ch >= '0' && ch <= '9')
 	{
@@ -117,6 +155,30 @@ int CharToDigit(const char& ch)
 	{
 		result = (int)ch - 'A' + 10;
 	}
+
+	return result;
+}
+
+char DigitToChar(const int& digit)
+{
+	char result;
+	string testStr;
+
+	if (digit >= 0 && digit <= 9)
+	{
+		result = char(digit + '0');
+	}
+	else if (digit > 9 && digit <= MAX_RADIX)
+	{
+		result = char(digit + 'A' - 10);
+	}
+
+	testStr = result;
+
+	cout << "---DigitToChar---" "\n";
+	cout << "digit : " << digit << "\n";
+	cout << "result : " << result << "\n";
+	cout << "testStr : " << testStr << "\n";
 
 	return result;
 }
@@ -137,7 +199,10 @@ bool CheckOverflow(int& result, const int& addedValue, const bool& isNumberNegat
 
 bool CheckDigit(int& digit, int& radix)
 {
-	if (digit >= 0 || digit < radix)
+	cout << "---CheckDigit---" "\n";
+	cout << "radix : " << radix << "\n";
+	cout << "digit : " << digit << "\n";
+	if (digit >= 0 && digit < radix)
 		return true;
 
 	cout << "Invalid character for this notation" "\n";
