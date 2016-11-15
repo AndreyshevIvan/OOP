@@ -86,10 +86,7 @@ int StringToInt(const string& str, int radix, bool& wasError)
 	const bool isNumberNegative = (str[0] == '-');
 	
 	if (isNumberNegative)
-	{
 		digitPos = 1;
-		std::cout << "minus" << std::endl;
-	}
 
 	for (digitPos; digitPos < str.length(); digitPos++)
 	{
@@ -129,12 +126,13 @@ string IntToString(int& value, int& radix, bool& wasError)
 	cout << "---IntToString---" << "\n";
 	string result = "";
 	string tempStr = "";
+	const bool isValueNegative = (value < 0);
 	int mod = 0;
 	int div = value;
-	int testValue = (abs(value));
+	if (isValueNegative)
+		div = abs(div) - 1;
 	cout << "mod : " << mod << "\n";
 	cout << "div : " << div << "\n";
-	cout << "testValue : " << testValue << "\n";
 
 	while (div >= radix)
 	{
@@ -148,7 +146,15 @@ string IntToString(int& value, int& radix, bool& wasError)
 		cout << "result : " << result << "\n";
 	}
 	tempStr = result;
-	result = DigitToChar(div);
+	if (isValueNegative)
+	{
+		result = "-";
+		result += DigitToChar(div + 1);
+	}
+	else
+	{
+		result += DigitToChar(div);
+	}
 	result += tempStr;
 		
 	return result;
