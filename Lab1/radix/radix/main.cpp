@@ -45,11 +45,8 @@ int main(int argc, char * argv[])
 	if (wasError)
 		return 1;
 
-	cout << "---main---" << "\n";
-	cout << "valueInDec : " << valueInDec << "\n";
 	string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
-	cout << "---main---" << "\n";
-	cout << "finalValue : " << valueInRadix << "\n";
+	cout << valueInRadix << "\n";
 
     return 0;
 }
@@ -104,8 +101,6 @@ int StringToInt(const string& str, int radix, bool& wasError)
 		if (wasError)
 			return 1;
 
-		cout << "addedValue : " << addedValue << "\n";
-
 		if (!CheckAdding(result, addedValue, isNumberNegative))
 		{
 			wasError = true;
@@ -123,7 +118,6 @@ int StringToInt(const string& str, int radix, bool& wasError)
 
 string IntToString(int& value, int& radix, bool& wasError)
 {
-	cout << "---IntToString---" << "\n";
 	string result = "";
 	string tempStr = "";
 	const bool isNumberNegative = (value < 0);
@@ -133,8 +127,6 @@ string IntToString(int& value, int& radix, bool& wasError)
 	{
 		div = abs(div) - 1;
 	}
-	cout << "mod : " << mod << "\n";
-	cout << "div : " << div << "\n";
 
 	while (div >= radix)
 	{
@@ -143,9 +135,6 @@ string IntToString(int& value, int& radix, bool& wasError)
 		tempStr = result;
 		result = DigitToChar(mod);
 		result += tempStr;
-		cout << "mod : " << mod << "\n";
-		cout << "div : " << div << "\n";
-		cout << "result : " << result << "\n";
 	}
 	tempStr = result;
 	if (isNumberNegative)
@@ -154,15 +143,12 @@ string IntToString(int& value, int& radix, bool& wasError)
 		result += DigitToChar(div);
 		result += tempStr;
 		result[result.length() - 1] = char(result[result.length() - 1] + 1);
-		cout << "tempStr[tempStr.length()] + 1 : " << result[result.length() - 1] << "\n";
 	}
 	else
 	{
 		result = DigitToChar(div);
 		result += tempStr;
-	}
-	cout << "result : " << result << "\n";
-	
+	}	
 
 	return result;
 }
@@ -199,11 +185,6 @@ char DigitToChar(const int& digit)
 
 	testStr = result;
 
-	cout << "---DigitToChar---" "\n";
-	cout << "digit : " << digit << "\n";
-	cout << "result : " << result << "\n";
-	cout << "testStr : " << testStr << "\n";
-
 	return result;
 }
 
@@ -223,9 +204,6 @@ bool CheckAdding(int& result, const int& addedValue, const bool& isNumberNegativ
 
 bool CheckDigit(int& digit, int& radix)
 {
-	cout << "---CheckDigit---" "\n";
-	cout << "radix : " << radix << "\n";
-	cout << "digit : " << digit << "\n";
 	if (digit >= 0 && digit < radix)
 		return true;
 
@@ -235,11 +213,8 @@ bool CheckDigit(int& digit, int& radix)
 
 const int calculateAddedValue(int& digit, int& radix, const size_t& digitOrder, bool& wasError)
 {
-	cout << "---calculateAddedValue---" "\n";
 	if ((log(INT_MAX) / log(radix) >= digitOrder) && (INT_MAX / pow(radix, digitOrder <= digit)))
 	{
-		cout << "pow : " << pow(radix, digitOrder) << "\n";
-		cout << "digit : " << digit << "\n";
 		return digit * pow(radix, digitOrder);
 	}
 
