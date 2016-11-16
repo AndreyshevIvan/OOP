@@ -9,7 +9,7 @@ using namespace std;
 
 bool CheckArgumentsCount(int &argc);
 bool CheckInputFile(char* argv[], ifstream &inputFile);
-bool CheckOutputFile(char* argv[], ifstream &outputFile);
+bool CheckOutputFile(char* argv[], ofstream &outputFile);
 bool CheckSearchStr(string &searchStr);
 void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr, string &newStr);
 string ReplaceStrings(string &currentStr, string &searchStr, string &subStr);
@@ -18,32 +18,32 @@ int main(int argc, char* argv[])
 {
 	if (!CheckArgumentsCount(argc))
 	{
-		cout << "Invalid arguments count" "\n";
-		cout << "Usage: replace.exe <input file> <output file> <search string> <replace string>" "\n";
-		return EXIT_FAILURE;
+		cout << "Invalid arguments count" "\n"
+			"Usage: replace.exe <input file> <output file> <search string> <replace string>" "\n";
+		return 1;
 	}
 
 	ifstream inputFile(argv[1]);
 	ofstream outputFile(argv[2]);
 
 	if (!CheckInputFile(argv, inputFile))
-		return EXIT_FAILURE;
+		return 1;
 
-	if (!CheckOutputFile(argv, inputFile))
-		return EXIT_FAILURE;
+	if (!CheckOutputFile(argv, outputFile))
+		return 1;
 
 	string searchStr = argv[3];
 	string newStr = argv[4];
 
 
 	if (!CheckSearchStr(searchStr))
-		return EXIT_FAILURE;
+		return 1;
 
 	EnterReplacing(inputFile, outputFile, searchStr, newStr);
 
 	inputFile.close();
 	outputFile.close();
-    return 0;
+	return 0;
 }
 
 bool CheckArgumentsCount(int &argc)
@@ -70,7 +70,7 @@ bool CheckInputFile(char* argv[], ifstream &inputFile)
 	return true;
 }
 
-bool CheckOutputFile(char* argv[], ifstream &outputFile)
+bool CheckOutputFile(char* argv[], ofstream &outputFile)
 {
 	if (!outputFile.is_open())
 	{
