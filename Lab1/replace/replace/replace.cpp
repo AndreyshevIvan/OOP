@@ -8,11 +8,12 @@ static const int ARGUMENTS_COUNT = 5;
 using namespace std;
 
 bool IsArgumentsCountValid(int argc);
-bool IsInputNotEmpty(char* argv[], ifstream &inputFile);
-bool IsOutputNotEmpty(char* argv[], ofstream &outputFile);
-bool IsSearchStrEmpty(string searchStr);
-void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string searchStr, string newStr);
-string ReplaceStrings(string &currentStr, string searchStr, string subStr);
+bool IsInputEmpty(ifstream &inputFile);
+bool IsInputOpen(ifstream &inputFile);
+bool IsOutputOpen(ofstream &outputFile);
+bool IsStringEmpty(string const& searchStr);
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string const& searchStr, string const& newStr);
+string ReplaceStrings(string currentStr, string const& searchStr, string const& subStr);
 
 int main(int argc, char* argv[])
 {
@@ -26,18 +27,33 @@ int main(int argc, char* argv[])
 	ifstream inputFile(argv[1]);
 	ofstream outputFile(argv[2]);
 
-	if (!IsInputNotEmpty(argv, inputFile))
+	if (IsInputOpen(inputFile))
+	{
+		cout << "Failed to open " << argv[1] << "\n";
 		return 1;
+	}
 
-	if (!IsOutputNotEmpty(argv, outputFile))
+	if (IsInputEmpty(inputFile))
+	{
+		cout << "Empty file " << argv[1] << "\n";
 		return 1;
+	}
 
-	string searchStr = argv[3];
-	string newStr = argv[4];
-
-
-	if (!IsSearchStrEmpty(searchStr))
+	if (IsOutputOpen(outputFile))
+	{
+		cout << "Failed to open " << argv[2] << "\n";
 		return 1;
+	}
+
+	const string searchStr = argv[3];
+	const string newStr = argv[4];
+
+
+	if (!IsStringEmpty(searchStr))
+	{
+		cout << "The search string is empty" "\n";
+		return 1;
+	}
 
 	EnterReplacing(inputFile, outputFile, searchStr, newStr);
 
@@ -54,45 +70,39 @@ bool IsArgumentsCountValid(int argc)
 	return true;
 }
 
-bool IsInputNotEmpty(char* argv[], ifstream &inputFile)
+bool IsInputEmpty(ifstream &inputFile)
+{
+	if (inputFile.peek() == ifstream::traits_type::eof())
+		return 1;
+
+	return false;
+}
+
+bool IsInputOpen(ifstream &inputFile)
 {
 	if (!inputFile.is_open())
-	{
-		cout << "Failed to open " << argv[1] << "\n";
-		return  false;
-	}
-	if (inputFile.peek() == ifstream::traits_type::eof())
-	{
-		cout << "Empty file " << argv[1] << "\n";
-		return false;
-	}
+		return  true;
 
-	return true;
+	return false;
 }
 
-bool IsOutputNotEmpty(char* argv[], ofstream &outputFile)
+bool IsOutputOpen(ofstream &outputFile)
 {
 	if (!outputFile.is_open())
-	{
-		cout << "Failed to open " << argv[2] << "\n";
-		return  false;
-	}
+		return  true;
 
-	return true;
+	return false;
 }
 
-bool IsSearchStrEmpty(string searchStr)
+bool IsStringEmpty(string const& searchStr)
 {
 	if (searchStr.size() == 0)
-	{
-		cout << "The search string is empty" "\n";
 		return false;
-	}
 
 	return true;
 }
 
-void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string searchStr, string newStr)
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string const& searchStr, string const& newStr)
 {
 	string currentStr;
 
@@ -107,7 +117,7 @@ void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string searchStr,
 	}
 }
 
-string ReplaceStrings(string &currentStr, string searchStr, string newStr)
+string ReplaceStrings(string currentStr, string const& searchStr, string const& newStr)
 {
 	const size_t searchStrLen = searchStr.length();
 
