@@ -5,50 +5,52 @@
 
 const int ARGUMENTS_COUNT = 4;
 const int MIN_RADIX = 2;
-const int MAX_RADIX = 36;
+const int MAX_RADIX = 35;
 
 using namespace std;
 
 bool IsArgumentsCountValid(int argc);
-bool IsRadixValueValid(int radix);
-bool IsAddedValueValid(int result, const int addedValue, const bool isNumberNegative);
-bool IsDigitValid(int digit, int radix);
+bool IsRadixValid(int const& radix);
+bool IsAddingAllowed(int result, int const& addedValue, bool const& isNumberNegative);
+bool IsDigitValid(int const& digit, int const& radix);
 
-int StringToInt(const string str, int radix, bool& wasError);
-string IntToString(int value, int radix, bool& wasError);
-int CharToDigit(const char ch);
-char DigitToChar(const int digit);
-const int CalculateAddedValue(int digit, int radix, const size_t digitOrder, bool& wasError);
+int StringToInt(string const& str, int const& radix, bool& wasError);
+string IntToString(int const& value, int const& radix, bool& wasError);
+int CharToDigit(char const& ch);
+char DigitToChar(int const& digit);
+const int CalculateAddedValue(int const& digit, int const& radix, size_t const& digitOrder, bool& wasError);
 
 int main(int argc, char * argv[])
 {
-	bool wasError = false;
-
 	if (!IsArgumentsCountValid(argc))
-		return 1;
-
-	int sourceRadix = stoi(argv[1]);
-	int destenationRadix = stoi(argv[2]);
-
-	if (!IsRadixValueValid(sourceRadix) || !IsRadixValueValid(destenationRadix))
-		return 1;
-
-	const string value = argv[3];
-
-	if (sourceRadix == destenationRadix)
 	{
-		cout << value << "\n";
+		cout << "Invalid arguments count" "\n"
+			"Usage: replace.exe <source notation> <destenation notation> <value>" "\n";
 		return 1;
 	}
 
-	int valueInDec = StringToInt(value, sourceRadix, wasError);
-	bool isValueNegative = (valueInDec < 0);
+	const int sourceRadix = stoi(argv[1]);
+	const int destenationRadix = stoi(argv[2]);
+
+	if (!IsRadixValid(sourceRadix) || !IsRadixValid(destenationRadix))
+	{
+		cout << "Invalid notation value" "\n"
+			"Radix should be in the range [2; 36]" "\n";
+		return 1;
+	}
+
+	const string value = argv[3];
+	bool wasError = false;
+	const int valueInDec = StringToInt(value, sourceRadix, wasError);
+
 	if (wasError)
 		return 1;
 
+	const bool isValueNegative = (valueInDec < 0);
 	string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
 	if (isValueNegative)
 		valueInRadix = "-" + valueInRadix;
+
 	cout << valueInRadix << "\n";
 
     return 0;
@@ -56,29 +58,15 @@ int main(int argc, char * argv[])
 
 bool IsArgumentsCountValid(int argc)
 {
-	if (argc != ARGUMENTS_COUNT)
-	{
-		cout << "Invalid arguments count" "\n"
-			"Usage: replace.exe <source notation> <destenation notation> <value>" "\n";
-		return false;
-	}
-
-	return true;
+	return (argc == ARGUMENTS_COUNT);
 }
 
-bool IsRadixValueValid(int radix)
+bool IsRadixValid(int const& radix)
 {
-	if (radix > MIN_RADIX && radix < MAX_RADIX)
-	{
-		return true;
-	}
-	
-	cout << "Invalid notation value" "\n"
-		"Radix should be in the range [2; 36]" "\n";
-	return false;
+	return (radix >= MIN_RADIX && radix <= MAX_RADIX);
 }
 
-int StringToInt(const string str, int radix, bool& wasError)
+int StringToInt(string const& str, int const& radix, bool& wasError)
 {
 	int result = 0;
 	int digit = 0;
@@ -94,6 +82,7 @@ int StringToInt(const string str, int radix, bool& wasError)
 
 		if (!IsDigitValid(digit, radix))
 		{
+			cout << "Invalid digit for this notation" "\n";
 			wasError = true;
 			return 1;
 		}
@@ -102,10 +91,14 @@ int StringToInt(const string str, int radix, bool& wasError)
 		const int addedValue = CalculateAddedValue(digit, radix, digitOrder, wasError);
 
 		if (wasError)
-			return 1;
-
-		if (!IsAddedValueValid(result, addedValue, isNumberNegative))
 		{
+			cout << "Overflow: Invalid calculate added value" "\n";
+			return 1;
+		}
+
+		if (!IsAddingAllowed(result, addedValue, isNumberNegative))
+		{
+			cout << "Overflow: Invalid adding added value" "\n";
 			wasError = true;
 			return 1;
 		}
@@ -119,30 +112,25 @@ int StringToInt(const string str, int radix, bool& wasError)
 	return result;
 }
 
-string IntToString(int value, int radix, bool& wasError)
+string IntToString(int const& value, int const& radix, bool& wasError)
 {
 	string result = "";
-	string tempStr = "";
 	const bool isNumberNegative = (value < 0);
 	int mod = 0;
-	unsigned div = abs(value);
+	unsigned int div = abs(value);
 
 	while (div >= radix)
 	{
 		mod = div % radix;
 		div = (div - mod) / radix;
-		tempStr = result;
-		result = DigitToChar(mod);
-		result += tempStr;
+		result = DigitToChar(mod) + result;
 	}
-	tempStr = result;
-	result = DigitToChar(div);
-	result += tempStr;
+	result = DigitToChar(div) + result;
 
 	return result;
 }
 
-int CharToDigit(const char ch)
+int CharToDigit(char const& ch)
 {
 	int result = -1;
 
@@ -158,7 +146,7 @@ int CharToDigit(const char ch)
 	return result;
 }
 
-char DigitToChar(const int digit)
+char DigitToChar(int const& digit)
 {
 	char result;
 	string testStr;
@@ -177,30 +165,27 @@ char DigitToChar(const int digit)
 	return result;
 }
 
-bool IsAddedValueValid(int result, const int addedValue, const bool isNumberNegative)
+bool IsAddingAllowed(int result, int const& addedValue, bool const& isNumberNegative)
 {
 	if (isNumberNegative)
-	{
-		if (result >= (INT_MIN + addedValue))
-			return true;
-	}
-	else if (result <= (INT_MAX - addedValue))
-			return true;
+		return (result >= (INT_MIN + addedValue));
+	else
+		return (result <= (INT_MAX - addedValue));
 
 	return false;
 }
 
-bool IsDigitValid(int digit, int radix)
+bool IsDigitValid(int const& digit, int const& radix)
 {
-	if (digit >= 0 && digit < radix)
-		return true;
-
-	return false;
+	return (digit >= 0 && digit < radix);
 }
 
-const int CalculateAddedValue(int digit, int radix, const size_t digitOrder, bool& wasError)
+const int CalculateAddedValue(int const& digit, int const& radix, size_t const& digitOrder, bool& wasError)
 {
-	if ((log(INT_MAX) / log(radix) >= digitOrder) && (INT_MAX / pow(radix, digitOrder <= digit)))
+	const bool isExponentValid = (log(INT_MAX) / log(radix) >= digitOrder);
+	const bool IsDigitValid = (INT_MAX / pow(radix, digitOrder <= digit));
+
+	if (isExponentValid && IsDigitValid)
 	{
 		return digit * pow(radix, digitOrder);
 	}
