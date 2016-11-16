@@ -42,9 +42,10 @@ int main(int argc, char * argv[])
 	}
 
 	int valueInDec = StringToInt(value, sourceRadix, wasError);
-	bool isValueNegative = (valueInDec < 0);
 	if (wasError)
 		return 1;
+
+	bool isValueNegative = (valueInDec < 0);
 
 	string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
 	if (isValueNegative)

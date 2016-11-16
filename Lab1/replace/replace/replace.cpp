@@ -118,7 +118,6 @@ string ReplaceStrings(string &currentStr, string &searchStr, string &newStr)
 	while (searchStrPos != string::npos)
 	{
 		resultStr += currentStr.substr(initialSearchPos, searchStrPos - initialSearchPos);
-		cout << resultStr << "\n";
 		resultStr += newStr;
 		initialSearchPos = searchStrPos + searchStrLen;
 		searchStrPos = currentStr.find(searchStr, searchStrPos + searchStrLen);
