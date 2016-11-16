@@ -7,37 +7,37 @@ static const int ARGUMENTS_COUNT = 5;
 
 using namespace std;
 
-bool CheckArgumentsCount(int &argc);
-bool CheckInputFile(char* argv[], ifstream &inputFile);
-bool CheckOutputFile(char* argv[], ifstream &outputFile);
-bool CheckSearchStr(string &searchStr);
-void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr, string &newStr);
-string ReplaceStrings(string &currentStr, string &searchStr, string &subStr);
+bool IsArgumentsCountValid(int argc);
+bool IsInputNotEmpty(char* argv[], ifstream &inputFile);
+bool IsOutputNotEmpty(char* argv[], ofstream &outputFile);
+bool IsSearchStrEmpty(string searchStr);
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string searchStr, string newStr);
+string ReplaceStrings(string &currentStr, string searchStr, string subStr);
 
 int main(int argc, char* argv[])
 {
-	if (!CheckArgumentsCount(argc))
+	if (!IsArgumentsCountValid(argc))
 	{
-		cout << "Invalid arguments count" "\n";
-		cout << "Usage: replace.exe <input file> <output file> <search string> <replace string>" "\n";
-		return EXIT_FAILURE;
+		cout << "Invalid arguments count" "\n"
+			"Usage: replace.exe <input file> <output file> <search string> <replace string>" "\n";
+		return 1;
 	}
 
 	ifstream inputFile(argv[1]);
 	ofstream outputFile(argv[2]);
 
-	if (!CheckInputFile(argv, inputFile))
-		return EXIT_FAILURE;
+	if (!IsInputNotEmpty(argv, inputFile))
+		return 1;
 
-	if (!CheckOutputFile(argv, inputFile))
-		return EXIT_FAILURE;
+	if (!IsOutputNotEmpty(argv, outputFile))
+		return 1;
 
 	string searchStr = argv[3];
 	string newStr = argv[4];
 
 
-	if (!CheckSearchStr(searchStr))
-		return EXIT_FAILURE;
+	if (!IsSearchStrEmpty(searchStr))
+		return 1;
 
 	EnterReplacing(inputFile, outputFile, searchStr, newStr);
 
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-bool CheckArgumentsCount(int &argc)
+bool IsArgumentsCountValid(int argc)
 {
 	if (argc != ARGUMENTS_COUNT)
 		return false;
@@ -54,7 +54,7 @@ bool CheckArgumentsCount(int &argc)
 	return true;
 }
 
-bool CheckInputFile(char* argv[], ifstream &inputFile)
+bool IsInputNotEmpty(char* argv[], ifstream &inputFile)
 {
 	if (!inputFile.is_open())
 	{
@@ -70,7 +70,7 @@ bool CheckInputFile(char* argv[], ifstream &inputFile)
 	return true;
 }
 
-bool CheckOutputFile(char* argv[], ifstream &outputFile)
+bool IsOutputNotEmpty(char* argv[], ofstream &outputFile)
 {
 	if (!outputFile.is_open())
 	{
@@ -81,7 +81,7 @@ bool CheckOutputFile(char* argv[], ifstream &outputFile)
 	return true;
 }
 
-bool CheckSearchStr(string &searchStr)
+bool IsSearchStrEmpty(string searchStr)
 {
 	if (searchStr.size() == 0)
 	{
@@ -92,7 +92,7 @@ bool CheckSearchStr(string &searchStr)
 	return true;
 }
 
-void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr, string &newStr)
+void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string searchStr, string newStr)
 {
 	string currentStr;
 
@@ -107,7 +107,7 @@ void EnterReplacing(ifstream &inputFile, ofstream &outputFile, string &searchStr
 	}
 }
 
-string ReplaceStrings(string &currentStr, string &searchStr, string &newStr)
+string ReplaceStrings(string &currentStr, string searchStr, string newStr)
 {
 	const size_t searchStrLen = searchStr.length();
 
@@ -118,7 +118,6 @@ string ReplaceStrings(string &currentStr, string &searchStr, string &newStr)
 	while (searchStrPos != string::npos)
 	{
 		resultStr += currentStr.substr(initialSearchPos, searchStrPos - initialSearchPos);
-		cout << resultStr << "\n";
 		resultStr += newStr;
 		initialSearchPos = searchStrPos + searchStrLen;
 		searchStrPos = currentStr.find(searchStr, searchStrPos + searchStrLen);
