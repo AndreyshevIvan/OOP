@@ -112,17 +112,15 @@ string ReplaceStrings(string &currentStr, string searchStr, string newStr)
 	const size_t searchStrLen = searchStr.length();
 
 	string resultStr = "";
-	size_t initialSearchPos = 0;
-	size_t searchStrPos = currentStr.find(searchStr, initialSearchPos);
+	size_t startSearchPos = 0;
+	size_t searchStrPos = currentStr.find(searchStr, startSearchPos);
 
 	while (searchStrPos != string::npos)
 	{
-		resultStr += currentStr.substr(initialSearchPos, searchStrPos - initialSearchPos);
-		resultStr += newStr;
-		initialSearchPos = searchStrPos + searchStrLen;
-		searchStrPos = currentStr.find(searchStr, searchStrPos + searchStrLen);
+		currentStr.replace(searchStrPos, searchStr.length(), newStr);
+		startSearchPos = searchStrPos + newStr.length();
+		searchStrPos = currentStr.find(searchStr, startSearchPos);
 	}
-	resultStr += currentStr.substr(initialSearchPos);
 
-	return resultStr;
+	return currentStr;
 }
