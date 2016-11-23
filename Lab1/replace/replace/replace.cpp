@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 
-static const int ARGUMENTS_COUNT = 5;;
+static const int ARGUMENTS_COUNT = 5;
 
 using namespace std;
 
