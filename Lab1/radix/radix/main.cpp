@@ -113,7 +113,7 @@ string IntToString(int value, int radix, bool& wasError)
 	string result = "";
 	const bool isNumberNegative = (value < 0);
 	int mod = 0;
-	unsigned int div = abs(value);
+	unsigned div = abs(value);
 
 	while (div >= radix)
 	{
