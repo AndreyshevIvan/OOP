@@ -7,8 +7,8 @@ static const int ARGUMENTS_COUNT = 5;
 
 using namespace std;
 
-void EnterReplacing(ifstream& inputFile, ofstream& outputFile, string const& searchStr, string const& newStr);
-string ReplaceStrings(string currentStr, string const& searchStr, string const& subStr);
+bool ReplaceStringsInFile(ifstream& inputFile, ofstream& outputFile, string const& searchStr, string const& replaceStr);
+void ReplaceStrings(string& currentStr, string const& searchStr, string const& replaceStr);
 
 int main(int argc, char* argv[])
 {
@@ -43,49 +43,62 @@ int main(int argc, char* argv[])
 	const string searchStr = argv[3];
 	const string newStr = argv[4];
 
-
 	if (searchStr.size() == 0)
 	{
 		cout << "The search string is empty" "\n";
 		return 1;
 	}
 
-	EnterReplacing(inputFile, outputFile, searchStr, newStr);
+    if (!ReplaceStringsInFile(inputFile, outputFile, searchStr, newStr))
+    {
+        cout << "The search string is empty" "\n";
+        return 1;
+    }
 
-	inputFile.close();
-	outputFile.close();
+    inputFile.close();
+    outputFile.close();
+
     return 0;
 }
 
-void EnterReplacing(ifstream& inputFile, ofstream& outputFile, string const& searchStr, string const& newStr)
+bool ReplaceStringsInFile(ifstream& inputFile, ofstream& outputFile, string const& searchStr, string const& replaceStr)
 {
+    if (searchStr.empty())
+    {
+        return false;
+    }
+
 	string currentStr;
 
 	while (getline(inputFile, currentStr))
 	{
-		if (!currentStr.empty())
-		{
-			currentStr = ReplaceStrings(currentStr, searchStr, newStr);
-			outputFile << currentStr;
-		}
-		outputFile << "\n";
+        ReplaceStrings(currentStr, searchStr, replaceStr);
+		outputFile << currentStr << "\n";
 	}
+
+    return true;
 }
 
-string ReplaceStrings(string currentStr, string const& searchStr, string const& newStr)
+void ReplaceStrings(string& currentStr, string const& searchStr, string const& replaceStr)
 {
-	const size_t searchStrLen = searchStr.length();
+    size_t copiedPos = 0;
+    size_t searchStrPos = currentStr.find(searchStr, 0);
 
-	string resultStr = "";
-	size_t startSearchPos = 0;
-	size_t searchStrPos = currentStr.find(searchStr, startSearchPos);
+    string newStr;
 
-	while (searchStrPos != string::npos)
-	{
-		currentStr.replace(searchStrPos, searchStr.length(), newStr);
-		startSearchPos = searchStrPos + newStr.length();
-		searchStrPos = currentStr.find(searchStr, startSearchPos);
-	}
-
-	return currentStr;
+    while (copiedPos != currentStr.length() || searchStrPos != string::npos)
+    {
+        if (copiedPos != searchStrPos)
+        {
+            newStr += currentStr[copiedPos];
+            ++copiedPos;
+        }
+        else
+        {
+            newStr += replaceStr;
+            copiedPos += searchStr.length();
+            searchStrPos = currentStr.find(searchStr, copiedPos);
+        }
+    }
+    currentStr.swap(newStr);
 }
