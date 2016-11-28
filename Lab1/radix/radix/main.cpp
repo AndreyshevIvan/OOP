@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -10,20 +9,19 @@ const int MAX_RADIX = 35;
 using namespace std;
 
 bool IsRadixValid(int radix);
-bool IsAddingAllowed(int result, int addedValue, bool isNumberNegative);
 
 int StringToInt(string const& str, int radix, bool& wasError);
-string IntToString(int value, int radix, bool& wasError);
+string IntToString(int value, int radix);
 int CharToDigit(char ch);
 char DigitToChar(int digit);
-const int CalculateAddedValue(int digit, int radix, size_t const& digitOrder, bool& wasError);
+void AddOrderToNumber(int& number, int radix, int digit, bool& wasError, bool isNumberNegative);
 
 int main(int argc, char * argv[])
 {
 	if (argc != ARGUMENTS_COUNT)
 	{
 		cout << "Invalid arguments count" "\n"
-			"Usage: replace.exe <source notation> <destenation notation> <value>" "\n";
+			"Usage: replace.exe <source notation> <destination notation> <value>" "\n";
 		return 1;
 	};
 
@@ -44,14 +42,14 @@ int main(int argc, char * argv[])
 	if (!wasError)
 	{
 		const bool isValueNegative = (valueInDec < 0);
-		string valueInRadix = IntToString(valueInDec, destenationRadix, wasError);
+		string valueInRadix = IntToString(valueInDec, destenationRadix);
 		if (isValueNegative)
-			valueInRadix = "-" + valueInRadix;
+		valueInRadix = "-" + valueInRadix;
 
 		cout << valueInRadix << "\n";
 		return 0;
 	}
-	
+
 	return 1;
 }
 
@@ -65,8 +63,9 @@ int StringToInt(string const& str, int radix, bool& wasError)
 	int result = 0;
 	int digit = 0;
 	size_t digitPos = 0;
+
 	const bool isNumberNegative = (str[0] == '-');
-	
+
 	if (isNumberNegative)
 		digitPos++;
 
@@ -81,41 +80,36 @@ int StringToInt(string const& str, int radix, bool& wasError)
 			return 1;
 		}
 
-		const size_t digitOrder = str.length() - digitPos - 1;
-		const int addedValue = CalculateAddedValue(digit, radix, digitOrder, wasError);
-
-		if (!wasError)
+		if (digitPos < str.length() - 1)
 		{
-			if (!IsAddingAllowed(result, addedValue, isNumberNegative))
-			{
-				cout << "Overflow: Invalid adding added value" "\n";
-				wasError = true;
-				return 1;
-			}
-
-			if (isNumberNegative)
-				result -= addedValue;
-			else
-				result += addedValue;
+			AddOrderToNumber(result, radix, digit, wasError, isNumberNegative);
+		}
+		else if (isNumberNegative && (INT_MIN + digit <= result))
+		{
+			result -= digit;
+		}
+		else if (!isNumberNegative && (INT_MAX - digit >= result))
+		{
+			result += digit;
 		}
 		else
 		{
-			cout << "Overflow: Forbidden to calculate added value" "\n";
-			return 1;
+			wasError = true;
+			cout << "Overflow when adding unit to nuber";
 		}
 	}
 
 	return result;
 }
 
-string IntToString(int value, int radix, bool& wasError)
+string IntToString(int value, int radix)
 {
 	string result = "";
 	const bool isNumberNegative = (value < 0);
 	int mod = 0;
 	unsigned div = abs(value);
 
-	while (div >= radix)
+	while (div >= (unsigned)radix)
 	{
 		mod = div % radix;
 		div = (div - mod) / radix;
@@ -138,6 +132,10 @@ int CharToDigit(char ch)
 	{
 		result = (int)ch - 'A' + 10;
 	}
+	else if (ch >= 'a' && ch <= 'z')
+	{
+		result = (int)ch - 'a' + 10;
+	}
 
 	return result;
 }
@@ -158,30 +156,30 @@ char DigitToChar(int digit)
 	return result;
 }
 
-bool IsAddingAllowed(int result, int addedValue, bool isNumberNegative)
+void AddOrderToNumber(int& number, int radix, int digit, bool& wasError, bool isNumberNegative)
 {
 	if (isNumberNegative)
 	{
-		return (result >= (INT_MIN + addedValue));
+		if ((INT_MIN + digit > number) || (INT_MIN / radix) > (number - digit))
+		{
+			wasError = true;
+			cout << "Overflow when adding order" << "\n";
+		}
+		else
+		{
+			number = (number - digit) * radix;
+		}
 	}
 	else
 	{
-		return (result <= (INT_MAX - addedValue));
+		if (INT_MAX - digit < number || (INT_MAX / radix) < (number + digit))
+		{
+			wasError = true;
+			cout << "Overflow when adding order" << "\n";
+		}
+		else
+		{
+			number = (number + digit) * radix;
+		}
 	}
-
-	return false;
-}
-
-const int CalculateAddedValue(int digit, int radix, size_t const& digitOrder, bool& wasError)
-{
-	const bool isExponentValid = (log(INT_MAX) / log(radix) >= digitOrder);
-	const bool isDigitValid = (INT_MAX / pow(radix, digitOrder <= digit));
-
-	if (isExponentValid && isDigitValid)
-	{
-		return (digit * pow(radix, digitOrder));
-	}
-
-	wasError = true;
-	return 1;
 }
