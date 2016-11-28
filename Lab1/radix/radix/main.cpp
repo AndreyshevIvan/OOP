@@ -4,7 +4,7 @@
 
 const int ARGUMENTS_COUNT = 4;
 const int MIN_RADIX = 2;
-const int MAX_RADIX = 35;
+const int MAX_RADIX = 36;
 
 using namespace std;
 
@@ -73,9 +73,9 @@ int StringToInt(string const& str, int radix, bool& wasError)
 	{
 		digit = CharToDigit(str[digitPos]);
 
-		if (digit < 0 && digit >= radix)
+		if (digit < 0 || digit >= radix)
 		{
-			cout << "Invalid digit for this notation" "\n";
+			cout << "Invalid character for this notation" "\n";
 			wasError = true;
 			return 1;
 		}
@@ -148,7 +148,7 @@ char DigitToChar(int digit)
 	{
 		result = char(digit + '0');
 	}
-	else if (digit > 9 && digit <= MAX_RADIX)
+	else
 	{
 		result = char(digit + 'A' - 10);
 	}
