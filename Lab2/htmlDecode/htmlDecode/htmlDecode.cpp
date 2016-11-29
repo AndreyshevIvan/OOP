@@ -24,6 +24,7 @@ string HtmlDecode(string const& html)
 
 void Replace(string& currentStr, string const& searchStr, string const& replaceStr)
 {
+	cout << "replceStr : " << replaceStr << "\n";
 	size_t copiedPos = 0;
 	size_t searchStrPos = currentStr.find(searchStr, 0);
 
