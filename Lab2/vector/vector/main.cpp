@@ -2,6 +2,11 @@
 
 #include "stdafx.h"
 #include "processVector.h"
+#include <vector>
+#include <iostream>
+#include <algorithm>
+#include <iterator>
+#include <boost/range/algorithm/copy.hpp>
 
 using namespace std;
 
@@ -16,7 +21,7 @@ int main()
 	}
 	ProcessVector(numbers);
 	sort(numbers.begin(), numbers.end());
-	copy(numbers.begin(), numbers.end(), ostream_iterator<double>(cout, " "));
+	boost::copy(numbers, ostream_iterator<double>(cout, ", "));
 
 	return 0;
 }

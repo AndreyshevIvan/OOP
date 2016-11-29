@@ -6,18 +6,16 @@ using namespace std;
 string HtmlDecode(string const& html)
 {
 	string newHtmlStr = html;
-	cout << "newHtmlStr : " << newHtmlStr << "\n";
 	map <string, string> decodeMap = { 
 		{ "&quot;", "\"" },
 		{ "&apos;", "'" },
 		{ "&lt;", "<" },
 		{ "&gt;", ">" },
-		{ "&amp;", "&" } };
+		{ "&amp;", "&" }
+	};
 
 	for (auto i = decodeMap.begin(); i != decodeMap.end(); i++)
 	{
-		cout << "i->first : " << i->first << "\n";
-		cout << "i->second : " << i->second << "\n";
 		Replace(newHtmlStr, i->first, i->second);
 	}
 
