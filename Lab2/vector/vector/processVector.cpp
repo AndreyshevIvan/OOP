@@ -1,16 +1,30 @@
+#include "stdafx.h"
 #include "processVector.h"
 
-double SearchMinElement(std::vector<double> const& numbers)
+bool SearchMinElement(std::vector<double> const& numbers, double& minElement)
 {
-	return *std::min_element(numbers.begin(), numbers.end());
+	if (!numbers.empty())
+	{
+		minElement = *std::min_element(numbers.begin(), numbers.end());
+		return true;
+	}
+
+	return false;
 }
 
 void ProcessVector(std::vector<double> &numbers)
-{	
-	double minElement = SearchMinElement(numbers);
-
-	for (size_t i = 0; i < numbers.size(); i++)
+{
+	if (!numbers.empty())
 	{
-		numbers[i] *= minElement;
+		double minElement;
+		SearchMinElement(numbers, minElement);
+		for (size_t i = 0; i < numbers.size(); i++)
+		{
+			numbers[i] *= minElement;
+		}
+	}
+	else
+	{
+		numbers = {};
 	}
 }

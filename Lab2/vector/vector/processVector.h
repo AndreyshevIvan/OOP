@@ -6,4 +6,4 @@
 #include <iterator>
 
 void ProcessVector(std::vector<double> &numbers);
-double SearchMinElement(std::vector<double> const& numbers);
+bool SearchMinElement(std::vector<double> const& numbers, double& minElement);
