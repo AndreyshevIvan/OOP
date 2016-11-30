@@ -1,47 +1,7 @@
 #include "stdafx.h"
-#include <iostream>
-#include <string>
-#include <set>
-#include <vector>
+#include "primeNumbers.h"
 
 using namespace std;
-
-const int ARGUMENTS_COUNT = 2;
-const int MIN_PRIME_NUMBER = 2;
-const int MAX_UPPER_BOUND = 100000000;
-const int MAX_PRIME_NUMBERS_COUNT = 5761456;
-
-int StrToInt(string const& str, bool& wasError);
-int CharToDigit(char ch, bool& wasError);
-set<int> GeneratePrimeNumbersSet(int upperBound);
-
-int main(int argc, char * argv[])
-{
-	if (argc != ARGUMENTS_COUNT)
-	{
-		cout << "Invalid arguments count" << "\n"
-			<< "Usage: primeNumbers.exe <upperBound>" "\n";
-		return 1;
-	}
-
-	bool wasError = false;
-	int upperBound = StrToInt(argv[1], wasError);
-
-	if (wasError)
-	{
-		return 1;
-	}
-	if (upperBound > MAX_UPPER_BOUND)
-	{
-		cout << "Invalid upperBound. UpperBound can be in range [0, 1000000000]" << "\n";
-		return 1;
-	}
-	set<int> primeNumbers = GeneratePrimeNumbersSet(upperBound);
-	
-	cout << primeNumbers.size() << "\n";
-
-	return 0;
-}
 
 std::set<int> GeneratePrimeNumbersSet(int upperBound)
 {
