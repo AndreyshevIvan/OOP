@@ -109,7 +109,7 @@ string IntToString(int value, int radix)
 	int mod = 0;
 	unsigned div = abs(value);
 
-	while (div >= (unsigned)radix)
+	while (div >= static_cast<unsigned>(radix))
 	{
 		mod = div % radix;
 		div = (div - mod) / radix;

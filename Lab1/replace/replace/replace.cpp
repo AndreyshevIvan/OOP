@@ -49,34 +49,34 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
-    if (!ReplaceStringsInFile(inputFile, outputFile, searchStr, newStr))
-    {
-        cout << "The search string is empty" "\n";
-        return 1;
-    }
+	if (!ReplaceStringsInFile(inputFile, outputFile, searchStr, newStr))
+	{
+		cout << "The search string is empty" "\n";
+		return 1;
+	}
 
-    inputFile.close();
-    outputFile.close();
+	inputFile.close();
+	outputFile.close();
 
-    return 0;
+	return 0;
 }
 
 bool ReplaceStringsInFile(ifstream& inputFile, ofstream& outputFile, string const& searchStr, string const& replaceStr)
 {
-    if (searchStr.empty())
-    {
-        return false;
-    }
+	if (searchStr.empty())
+	{
+		return false;
+	}
 
 	string currentStr;
 
 	while (getline(inputFile, currentStr))
 	{
-        ReplaceStrings(currentStr, searchStr, replaceStr);
+		ReplaceStrings(currentStr, searchStr, replaceStr);
 		outputFile << currentStr << "\n";
 	}
 
-    return true;
+	return true;
 }
 
 void ReplaceStrings(string& currentStr, string const& searchStr, string const& replaceStr)
@@ -88,7 +88,7 @@ void ReplaceStrings(string& currentStr, string const& searchStr, string const& r
 
 		string newStr;
 
-		while (copiedPos != currentStr.length() || searchStrPos != string::npos)
+		while (copiedPos != currentStr.length())
 		{
 			if (copiedPos != searchStrPos)
 			{
