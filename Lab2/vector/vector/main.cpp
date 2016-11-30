@@ -4,7 +4,6 @@
 #include "processVector.h"
 #include <vector>
 #include <iostream>
-#include <algorithm>
 #include <iterator>
 #include <boost/range/algorithm/copy.hpp>
 

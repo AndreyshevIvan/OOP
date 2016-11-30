@@ -81,24 +81,27 @@ bool ReplaceStringsInFile(ifstream& inputFile, ofstream& outputFile, string cons
 
 void ReplaceStrings(string& currentStr, string const& searchStr, string const& replaceStr)
 {
-    size_t copiedPos = 0;
-    size_t searchStrPos = currentStr.find(searchStr, 0);
+	if (searchStr != "")
+	{
+		size_t copiedPos = 0;
+		size_t searchStrPos = currentStr.find(searchStr, 0);
 
-    string newStr;
+		string newStr;
 
-    while (copiedPos != currentStr.length() || searchStrPos != string::npos)
-    {
-        if (copiedPos != searchStrPos)
-        {
-            newStr += currentStr[copiedPos];
-            ++copiedPos;
-        }
-        else
-        {
-            newStr += replaceStr;
-            copiedPos += searchStr.length();
-            searchStrPos = currentStr.find(searchStr, copiedPos);
-        }
-    }
-    currentStr.swap(newStr);
+		while (copiedPos != currentStr.length() || searchStrPos != string::npos)
+		{
+			if (copiedPos != searchStrPos)
+			{
+				newStr += currentStr[copiedPos];
+				++copiedPos;
+			}
+			else
+			{
+				newStr += replaceStr;
+				copiedPos += searchStr.length();
+				searchStrPos = currentStr.find(searchStr, copiedPos);
+			}
+		}
+		currentStr.swap(newStr);
+	}
 }
