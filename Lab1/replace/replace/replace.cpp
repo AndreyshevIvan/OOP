@@ -97,7 +97,7 @@ void ReplaceStrings(string& currentStr, string const& searchStr, string const& r
 			}
 			else
 			{
-				newStr += replaceStr;
+				newStr.append(replaceStr);
 				copiedPos += searchStr.length();
 				searchStrPos = currentStr.find(searchStr, copiedPos);
 			}

@@ -29,7 +29,7 @@ void Replace(string& currentStr, string const& searchStr, string const& replaceS
 
 	string newStr;
 
-	while (copiedPos != currentStr.length() || searchStrPos != string::npos)
+	while (copiedPos != currentStr.length())
 	{
 		if (copiedPos != searchStrPos)
 		{

@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_SUITE(ProcessVector_function)
 BOOST_AUTO_TEST_CASE(make_empty_vector_from_empty_vector)
 {
 	vector<double> numbers = {};
-	vector<double> requiredNumbers = {};
+	vector<double> requiredNumbers = {0};
 	ProcessVector(numbers);
 	BOOST_CHECK(IsVectorsAreEquals(numbers, requiredNumbers));
 }

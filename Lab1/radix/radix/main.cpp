@@ -128,7 +128,7 @@ int CharToDigit(char ch)
 	{
 		result = (int)ch - '0';
 	}
-	else if (ch > '9' && ch <= 'Z')
+	else if (ch >= 'A' && ch <= 'Z')
 	{
 		result = (int)ch - 'A' + 10;
 	}
@@ -160,7 +160,7 @@ void AddOrderToNumber(int& number, int radix, int digit, bool& wasError, bool is
 {
 	if (isNumberNegative)
 	{
-		if ((INT_MIN + digit > number) || (INT_MIN / radix) > (number - digit))
+		if ((std::numeric_limits<int>::min() + digit > number) || (std::numeric_limits<int>::min() / radix) > (number - digit))
 		{
 			wasError = true;
 			cout << "Overflow when adding order" << "\n";
@@ -172,7 +172,7 @@ void AddOrderToNumber(int& number, int radix, int digit, bool& wasError, bool is
 	}
 	else
 	{
-		if (INT_MAX - digit < number || (INT_MAX / radix) < (number + digit))
+		if (std::numeric_limits<int>::max() - digit < number || (std::numeric_limits<int>::max() / radix) < (number + digit))
 		{
 			wasError = true;
 			cout << "Overflow when adding order" << "\n";

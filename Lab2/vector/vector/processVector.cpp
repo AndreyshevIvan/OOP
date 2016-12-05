@@ -23,8 +23,4 @@ void ProcessVector(std::vector<double> &numbers)
 			numbers[i] *= minElement;
 		}
 	}
-	else
-	{
-		numbers = {};
-	}
 }
