@@ -60,3 +60,50 @@ const CRational CRational::operator+() const
 {
 	return *this;
 }
+
+CRational const operator+(CRational const& firstValue, CRational const& secondValue)
+{
+	int numerator;
+	int denominator;
+
+	if (firstValue.GetDenominator() == secondValue.GetDenominator())
+	{
+		numerator = firstValue.GetNumerator() + secondValue.GetNumerator();
+		denominator = firstValue.GetDenominator();
+	}
+	else
+	{
+		denominator = firstValue.GetDenominator() * secondValue.GetDenominator();
+		numerator = firstValue.GetNumerator() * secondValue.GetDenominator() +
+			secondValue.GetNumerator() * firstValue.GetDenominator();
+	}
+
+	return CRational(numerator, denominator);
+}
+
+CRational const operator-(CRational const& firstValue, CRational const& secondValue)
+{
+	return firstValue + (-secondValue);
+}
+
+CRational const operator*(CRational const& firstValue, CRational const& secondValue)
+{
+	int numerator;
+	int denominator;
+
+	numerator = firstValue.GetNumerator() * secondValue.GetNumerator();
+	denominator = firstValue.GetDenominator() * secondValue.GetDenominator();
+
+	return CRational(numerator, denominator);
+}
+
+CRational const operator/(CRational const& firstValue, CRational const& secondValue)
+{
+	int numerator;
+	int denominator;
+
+	numerator = secondValue.GetDenominator();
+	denominator = secondValue.GetNumerator();
+
+	return CRational(numerator, denominator) * firstValue;
+}

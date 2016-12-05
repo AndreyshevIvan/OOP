@@ -20,3 +20,8 @@ private:
 
 	void Normalize();
 };
+
+CRational const operator+(CRational const& firstValue, CRational const& secondValue);
+CRational const operator-(CRational const& firstValue, CRational const& secondValue);
+CRational const operator*(CRational const& firstValue, CRational const& secondValue);
+CRational const operator/(CRational const& firstValue, CRational const& secondValue);
