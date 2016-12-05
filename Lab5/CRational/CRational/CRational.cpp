@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "CRational.h"
+#include <iostream>
 
 CRational::CRational(int numerator, int denominator)
 	:m_numerator(numerator)
@@ -106,4 +107,89 @@ CRational const operator/(CRational const& firstValue, CRational const& secondVa
 	denominator = secondValue.GetNumerator();
 
 	return CRational(numerator, denominator) * firstValue;
+}
+
+const CRational& CRational::operator+=(CRational const& value)
+{
+	*this = *this + value;
+
+	return *this;
+}
+
+const CRational& CRational::operator-=(CRational const& value)
+{
+	*this = *this - value;
+
+	return *this;
+}
+
+const CRational& CRational::operator*=(CRational const& value)
+{
+	*this = *this * value;
+
+	return *this;
+}
+
+const CRational& CRational::operator/=(CRational const& value)
+{
+	*this = *this / value;
+
+	return *this;
+}
+
+bool const operator==(CRational const& firstValue, CRational const& secondValue)
+{
+	return (firstValue - secondValue).GetNumerator() == 0;
+}
+
+bool const operator!=(CRational const& firstValue, CRational const& secondValue)
+{
+	if (firstValue == secondValue)
+	{
+		return false;
+	}
+	
+	return true;
+}
+
+bool const operator<(CRational const& firstValue, CRational const& secondValue)
+{
+	int firstNumerator = firstValue.GetNumerator() * secondValue.GetDenominator();
+	int secondNumerator = secondValue.GetNumerator() * firstValue.GetDenominator();
+
+	return firstNumerator < secondNumerator;
+}
+
+bool const operator<=(CRational const& firstValue, CRational const& secondValue)
+{
+	return (firstValue < secondValue) || (firstValue == secondValue);
+}
+
+bool const operator>(CRational const& firstValue, CRational const& secondValue)
+{
+	return !(firstValue < secondValue) && !(firstValue == secondValue);
+}
+
+bool const operator>=(CRational const& firstValue, CRational const& secondValue)
+{
+	return !(firstValue < secondValue);
+}
+
+std::ostream& operator<<(std::ostream& output, CRational const& rational)
+{
+	output << rational.GetNumerator() << '/' << rational.GetDenominator();
+	return output;
+}
+
+std::istream& operator>>(std::istream& input, CRational& rational)
+{
+	int numerator;
+	int denominator;
+
+	if ((input >> numerator) && (input.get() == '/') && (input >> denominator))
+	{
+		rational = CRational(numerator, denominator);
+	}
+
+	return input;
 }

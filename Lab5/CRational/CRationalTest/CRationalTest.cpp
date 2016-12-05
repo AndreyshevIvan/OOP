@@ -173,5 +173,129 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
+		
+	BOOST_AUTO_TEST_CASE(increase_the_number_on_rational_or_int)
+	{
+		CRational rational(3, 5);
+		CRational increaseRational(7, 5);
+		rational += increaseRational;
+		BOOST_CHECK(IsRationalEqual(rational, 2, 1));
+
+		int increaseInt = 4;
+		rational += increaseInt;
+		BOOST_CHECK(IsRationalEqual(rational, 6, 1));
+	}
+
+	BOOST_AUTO_TEST_CASE(reducing_the_number_on_rational_or_int)
+	{
+		CRational rational(3, 5);
+		CRational reducingRational(2, 5);
+		rational -= reducingRational;
+		BOOST_CHECK(IsRationalEqual(rational, 1, 5));
+
+		int reducingInt = 2;
+		rational -= reducingInt;
+		BOOST_CHECK(IsRationalEqual(rational, -9, 5));
+	}
+
+	BOOST_AUTO_TEST_CASE(multiply_the_number_on_rational_or_int)
+	{
+		CRational rational(2, 3);
+		CRational multiplyRational(7, 5);
+		rational *= multiplyRational;
+		BOOST_CHECK(IsRationalEqual(rational, 14, 15));
+
+		int multiplyInt = 4;
+		rational *= multiplyInt;
+		BOOST_CHECK(IsRationalEqual(rational, 56, 15));
+	}
+
+	BOOST_AUTO_TEST_CASE(devide_the_number_on_rational_or_int)
+	{
+		CRational rational(3, 5);
+		CRational devideRational(2, 5);
+		rational /= devideRational;
+		BOOST_CHECK(IsRationalEqual(rational, 3, 2));
+
+		int devideInt = 2;
+		rational /= devideInt;
+		BOOST_CHECK(IsRationalEqual(rational, 3, 4));
+	}
+
+	BOOST_FIXTURE_TEST_SUITE(check_boolean_operators, Rational)
+
+		BOOST_AUTO_TEST_CASE(check_equality_of_two_rational_numbers)
+		{
+			int intNum = 4;
+			BOOST_CHECK(rational == rational);
+			BOOST_CHECK(!(rational == CRational(1, 7)));
+			BOOST_CHECK(!(rational == CRational(1, 7)));
+			BOOST_CHECK(CRational(80, 20) == intNum);
+			BOOST_CHECK(intNum == CRational(80, 20));
+		}
+
+		BOOST_AUTO_TEST_CASE(check_not_equality_of_two_rational_numbers)
+		{
+			int intNum = 7;
+			CRational intNumInRat = CRational(49, 7);
+			CRational notEqualrat = CRational(1, 7);
+
+			BOOST_CHECK(!(rational != rational));
+			BOOST_CHECK(rational != notEqualrat);
+			BOOST_CHECK(notEqualrat != rational);
+			BOOST_CHECK(!(intNumInRat != intNum));
+		}
+
+		BOOST_AUTO_TEST_CASE(ñhecking_less_than_operator)
+		{
+			int intNumber = 2;
+			CRational majorRat = rational + CRational(6, 7);
+			CRational minorRat = rational - CRational(2, 7);
+
+			BOOST_CHECK(!(rational < rational));
+			BOOST_CHECK(rational < majorRat);
+			BOOST_CHECK(minorRat < rational);
+ 			BOOST_CHECK(!(intNumber < rational));
+			BOOST_CHECK(majorRat < intNumber);
+		}
+
+		BOOST_AUTO_TEST_CASE(ñhecking_less_than_or_equal_operator)
+		{
+			int intNumber = 4;
+			CRational majorRat = rational + CRational(2, 7);
+			CRational minorRat = rational - CRational(10, 7);
+
+			BOOST_CHECK(rational <= rational);
+			BOOST_CHECK(rational <= majorRat);
+			BOOST_CHECK(rational <= intNumber);
+			BOOST_CHECK(!(intNumber <= rational));
+			BOOST_CHECK(minorRat <= majorRat);
+		}
+
+		BOOST_AUTO_TEST_CASE(ñhecking_more_than_operator)
+		{
+			int intNumber = 5;
+			CRational majorRat = rational + CRational(13, 2);
+			CRational minorRat = rational - CRational(100, 20);
+
+			BOOST_CHECK(majorRat > minorRat);
+			BOOST_CHECK(intNumber > minorRat);
+			BOOST_CHECK(majorRat > intNumber);
+			BOOST_CHECK(!(rational > rational));
+		}
+
+		BOOST_AUTO_TEST_CASE(ñhecking_more_than_or_equal_operator)
+		{
+			int intNumber = 5;
+			CRational majorRat = rational + CRational(13, 2);
+			CRational minorRat = rational - CRational(100, 20);
+
+			BOOST_CHECK(majorRat >= minorRat);
+			BOOST_CHECK(majorRat >= majorRat);
+			BOOST_CHECK(intNumber >= rational);
+			BOOST_CHECK(majorRat >= intNumber);
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE_END()
