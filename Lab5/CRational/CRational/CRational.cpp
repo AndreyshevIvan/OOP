@@ -118,7 +118,7 @@ const CRational& CRational::operator+=(CRational const& value)
 
 const CRational& CRational::operator-=(CRational const& value)
 {
-	*this = *this - value;
+	*this += -value;
 
 	return *this;
 }
