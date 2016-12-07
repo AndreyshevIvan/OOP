@@ -61,14 +61,14 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 
 	BOOST_AUTO_TEST_CASE(check_unary_plus)
 	{
-		CRational num1(-2, 4);
+		CRational const num1(-2, 4);
 		CRational num2 = +num1;
 		BOOST_CHECK(IsRationalEqual(num1, num2.GetNumerator(), num2.GetDenominator()));
 	}
 
 	BOOST_AUTO_TEST_CASE(check_unary_minus)
 	{
-		CRational num1(1, 3);
+		CRational const num1(1, 3);
 		CRational num2 = -num1;
 		BOOST_CHECK(IsRationalEqual(num1, -num2.GetNumerator(), num2.GetDenominator()));
 	}

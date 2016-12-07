@@ -7,9 +7,9 @@ class CRational final
 public:
 	CRational::CRational(int numerator = 0, int denominator = 1);
 
-	int GetNumerator()const;
-	int GetDenominator()const;
-	double ToDouble()const;
+	int GetNumerator() const;
+	int GetDenominator() const;
+	double ToDouble() const;
 
 	const CRational operator-() const;
 	const CRational operator+() const;
@@ -32,12 +32,12 @@ CRational const operator-(CRational const& firstValue, CRational const& secondVa
 CRational const operator*(CRational const& firstValue, CRational const& secondValue);
 CRational const operator/(CRational const& firstValue, CRational const& secondValue);
 
-bool const operator==(CRational const& firstValue, CRational const& secondValue);
-bool const operator!=(CRational const& firstValue, CRational const& secondValue);
-bool const operator<(CRational const& firstValue, CRational const& secondValue);
-bool const operator<=(CRational const& firstValue, CRational const& secondValue);
-bool const operator>(CRational const& firstValue, CRational const& secondValue);
-bool const operator>=(CRational const& firstValue, CRational const& secondValue);
+bool operator==(CRational const& firstValue, CRational const& secondValue);
+bool operator!=(CRational const& firstValue, CRational const& secondValue);
+bool operator<(CRational const& firstValue, CRational const& secondValue);
+bool operator<=(CRational const& firstValue, CRational const& secondValue);
+bool operator>(CRational const& firstValue, CRational const& secondValue);
+bool operator>=(CRational const& firstValue, CRational const& secondValue);
 
 std::ostream& operator<<(std::ostream& output, CRational const& rational);
 std::istream& operator>>(std::istream& input, CRational& rational);

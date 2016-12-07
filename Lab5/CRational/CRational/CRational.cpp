@@ -137,12 +137,12 @@ const CRational& CRational::operator/=(CRational const& value)
 	return *this;
 }
 
-bool const operator==(CRational const& firstValue, CRational const& secondValue)
+bool operator==(CRational const& firstValue, CRational const& secondValue)
 {
 	return (firstValue - secondValue).GetNumerator() == 0;
 }
 
-bool const operator!=(CRational const& firstValue, CRational const& secondValue)
+bool operator!=(CRational const& firstValue, CRational const& secondValue)
 {
 	if (firstValue == secondValue)
 	{
@@ -152,7 +152,7 @@ bool const operator!=(CRational const& firstValue, CRational const& secondValue)
 	return true;
 }
 
-bool const operator<(CRational const& firstValue, CRational const& secondValue)
+bool operator<(CRational const& firstValue, CRational const& secondValue)
 {
 	int firstNumerator = firstValue.GetNumerator() * secondValue.GetDenominator();
 	int secondNumerator = secondValue.GetNumerator() * firstValue.GetDenominator();
@@ -160,17 +160,17 @@ bool const operator<(CRational const& firstValue, CRational const& secondValue)
 	return firstNumerator < secondNumerator;
 }
 
-bool const operator<=(CRational const& firstValue, CRational const& secondValue)
+bool operator<=(CRational const& firstValue, CRational const& secondValue)
 {
 	return (firstValue < secondValue) || (firstValue == secondValue);
 }
 
-bool const operator>(CRational const& firstValue, CRational const& secondValue)
+bool operator>(CRational const& firstValue, CRational const& secondValue)
 {
 	return !(firstValue < secondValue) && !(firstValue == secondValue);
 }
 
-bool const operator>=(CRational const& firstValue, CRational const& secondValue)
+bool operator>=(CRational const& firstValue, CRational const& secondValue)
 {
 	return !(firstValue < secondValue);
 }
