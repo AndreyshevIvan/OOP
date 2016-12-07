@@ -63,9 +63,11 @@ bool CCar::SetGear(int gear)
 	switch (gear)
 	{
 	case -1:
-		if (m_speed == 0 && (m_gear == Gear::NEUTRAL || m_gear == Gear::FIFTH))
+		if ((m_speed == 0 && (m_gear == Gear::NEUTRAL || m_gear == Gear::FIFTH)) ||
+			(m_gear == Gear::REAR))
 		{
 			m_gear = Gear::REAR;
+			cout << "lol";
 			return true;
 		}
 		break;
@@ -76,7 +78,8 @@ bool CCar::SetGear(int gear)
 	case 1:
 		if ((m_gear == Gear::REAR && m_speed == 0) ||
 			(m_gear == Gear::NEUTRAL && m_direction == Direction::STAY) ||
-			(m_direction == Direction::FORWARD && m_speed >= 0 && m_speed <= 30))
+			(m_direction == Direction::FORWARD && m_speed >= 0 && m_speed <= 30) ||
+			(m_gear == Gear::FIRST))
 		{
 			m_gear = Gear::FIRST;
 			return true;

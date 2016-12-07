@@ -42,7 +42,7 @@ bool CCarController::Info(std::istream& arguments)
 
 	if (m_car.IsEngineTurnOn())
 	{
-		info += "Engine is turned on \nDirection is: " + GetDirection() + "\nSpeed is: " + to_string(m_car.GetSpeed()) + "\nGear is: " + GetGear() + "\n";;
+		info += "Engine is turned on \nDirection is: " + GetDirection() + "\nSpeed is: " + to_string(m_car.GetSpeed()) + "\nGear is: " + GetGear() + "\n";
 	}
 	else
 	{
@@ -102,7 +102,11 @@ bool CCarController::EngineOn(std::istream& arguments)
 
 bool CCarController::EngineOff(std::istream& arguments)
 {
-	m_car.TurnOffEngine();
+	if (!m_car.TurnOffEngine())
+	{
+		m_output << "The engine is not turned on" "\n";
+	}
+
 	return true;
 }
 
@@ -110,12 +114,16 @@ bool CCarController::SetGear(std::istream& arguments)
 {
 	int gear;
 	arguments >> gear;
-	m_car.SetGear(gear);
 
-	if (m_car.SetGear(gear))
+	if (!m_car.IsEngineTurnOn())
 	{
-		m_output << "The engine is not turned on or the vehicle speed is not suitable\n";
+		m_output << "The engine is not turned on" "\n";
 	}
+	else if(!m_car.SetGear(gear))
+	{
+		m_output << "The vehicle speed is not suitable\n";
+	}
+
 	return true;
 }
 
@@ -124,7 +132,14 @@ bool CCarController::SetSpeed(std::istream& arguments)
 	int speed;
 	arguments >> speed;
 
-	m_car.SetSpeed(speed);
+	if (!m_car.IsEngineTurnOn())
+	{
+		m_output << "The engine is not turned on" "\n";
+	}
+	else if (!m_car.SetSpeed(speed))
+	{
+		m_output << "The vehicle gear is not suitable for this speed\n";
+	}
 
 	return true;
 }
