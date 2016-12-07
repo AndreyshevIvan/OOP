@@ -19,6 +19,7 @@ public:
 	const CRational& operator*=(CRational const& value);
 	const CRational& operator/=(CRational const& value);
 
+	void ToMixedNumeral(int& integer, CRational& rational);
 private:
 	int m_numerator;
 	int m_denominator;

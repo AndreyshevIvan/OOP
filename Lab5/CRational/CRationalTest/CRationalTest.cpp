@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "..\CRational\CRational.h"
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -294,6 +295,52 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(majorRat >= majorRat);
 			BOOST_CHECK(intNumber >= rational);
 			BOOST_CHECK(majorRat >= intNumber);
+		}
+
+		BOOST_AUTO_TEST_CASE(output_operator_can_write_rational_number)
+		{
+			ostringstream out1;
+			out1 << CRational(4, 3);
+			BOOST_CHECK_EQUAL(out1.str(), "4/3");
+
+			ostringstream out2;
+			out2 << CRational(-4, 3);
+			BOOST_CHECK_EQUAL(out2.str(), "-4/3");
+
+			ostringstream out3;
+			out3 << CRational(-4, 0);
+			BOOST_CHECK_EQUAL(out3.str(), "0/1");
+		}
+
+		BOOST_AUTO_TEST_CASE(input_operator_can_read_rational_number)
+		{
+			istringstream normalInput("3/4");
+			normalInput >> rational;
+			BOOST_CHECK(IsRationalEqual(rational, 3, 4));
+
+			istringstream negativeInput("-3/4");
+			negativeInput >> rational;
+			BOOST_CHECK(IsRationalEqual(rational, -3, 4));
+
+			istringstream invalidInput("3</>4");
+			invalidInput >> rational;
+			BOOST_CHECK(invalidInput.failbit);
+		}
+
+		BOOST_AUTO_TEST_CASE(convert_to_mixed_numeral)
+		{
+			rational = CRational(18, 3);
+			int number;
+			CRational newRat;
+
+			rational.ToMixedNumeral(number, newRat);
+			BOOST_CHECK(number == 6);
+			BOOST_CHECK(IsRationalEqual(newRat, 0, 1));
+
+			rational = CRational(-31, 19);
+			rational.ToMixedNumeral(number, newRat);
+			BOOST_CHECK(number == -1);
+			BOOST_CHECK(IsRationalEqual(newRat, 12, 19));
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()

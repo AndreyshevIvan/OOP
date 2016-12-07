@@ -190,6 +190,36 @@ std::istream& operator>>(std::istream& input, CRational& rational)
 	{
 		rational = CRational(numerator, denominator);
 	}
+	else
+	{
+		input.setstate(std::ios_base::failbit);
+	}
 
 	return input;
+}
+
+void CRational::ToMixedNumeral(int& integer, CRational& rational)
+{
+	bool isNumberNegative = false;
+	int numerator = this->GetNumerator();
+	int denominator = this->GetDenominator();
+	if (numerator < 0)
+	{
+		isNumberNegative = true;
+		numerator = abs(numerator);
+	}
+	integer = 0;
+
+	while (numerator >= denominator)
+	{
+		numerator -= denominator;
+		integer++;
+	}
+
+	if (isNumberNegative)
+	{
+		integer = -integer;
+	}
+
+	rational = CRational(numerator, denominator);
 }

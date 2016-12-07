@@ -67,7 +67,6 @@ bool CCar::SetGear(int gear)
 			(m_gear == Gear::REAR))
 		{
 			m_gear = Gear::REAR;
-			cout << "lol";
 			return true;
 		}
 		break;
