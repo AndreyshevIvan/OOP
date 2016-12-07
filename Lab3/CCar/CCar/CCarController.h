@@ -11,7 +11,6 @@ class CCarController
 {
 public:
 	CCarController(std::istream& input, std::ostream& output, CCar& car);
-	bool isExit;
 
 	bool HandleCommand();
 

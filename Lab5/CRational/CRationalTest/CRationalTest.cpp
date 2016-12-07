@@ -341,6 +341,11 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			rational.ToMixedNumeral(number, newRat);
 			BOOST_CHECK(number == -1);
 			BOOST_CHECK(IsRationalEqual(newRat, 12, 19));
+
+			rational = CRational(0, 100);
+			rational.ToMixedNumeral(number, newRat);
+			BOOST_CHECK(number == 0);
+			BOOST_CHECK(IsRationalEqual(newRat, 0, 1));
 		}
 
 	BOOST_AUTO_TEST_SUITE_END()
