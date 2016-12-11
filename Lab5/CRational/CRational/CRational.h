@@ -14,10 +14,10 @@ public:
 	const CRational operator-() const;
 	const CRational operator+() const;
 
-	const CRational& operator+=(CRational const& value);
-	const CRational& operator-=(CRational const& value);
-	const CRational& operator*=(CRational const& value);
-	const CRational& operator/=(CRational const& value);
+	CRational& operator+=(CRational const& value);
+	CRational& operator-=(CRational const& value);
+	CRational& operator*=(CRational const& value);
+	CRational& operator/=(CRational const& value);
 
 	void ToMixedNumeral(int& integer, CRational& rational);
 private:

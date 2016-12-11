@@ -16,7 +16,7 @@ CRational::CRational(int numerator, int denominator)
 		m_numerator = -m_numerator;
 		m_denominator = -m_denominator;
 	}
-	
+
 	Normalize();
 }
 
@@ -219,6 +219,7 @@ void CRational::ToMixedNumeral(int& integer, CRational& rational)
 	if (isNumberNegative)
 	{
 		integer = -integer;
+		numerator = -numerator;
 	}
 
 	rational = CRational(numerator, denominator);
