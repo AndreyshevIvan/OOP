@@ -1,5 +1,4 @@
 #include "stdafx.h"
-
 #include "../bodies/CParallelepiped.h"
 
 struct Parallelepiped_
@@ -54,9 +53,6 @@ BOOST_AUTO_TEST_CASE(has_a_mass)
 
 BOOST_AUTO_TEST_CASE(can_be_converted_to_string)
 {
-	std::ofstream file;
-	file.open("output.txt");
-	file << static_cast<const CBody &>(sparallelepiped).ToString();
 	const std::string expectedString = "Parallelepiped:\n\tDensity: 20\n\tVolume: 80\n\tMass: 1600\n\tWidth: 8\n\tHeight: 5\n\tDepth: 2\n";
 	BOOST_CHECK_EQUAL(static_cast<const CBody &>(sparallelepiped).ToString(), expectedString);
 }

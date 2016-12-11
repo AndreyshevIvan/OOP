@@ -141,8 +141,31 @@ bool CController::CreateParallelepiped(std::istream& args)
 
 bool CController::CreateCone(std::istream& args)
 {
-	args;
-	return true;
+	bool isAdded = true;
+	double density;
+	double height;
+	double radius;
+
+	if (!(args >> density) || !(args >> radius) || !(args >> height))
+	{
+		m_output << "Invalid count of arguments\n"
+			<< "Usage: Cone <density> <radius> <height>\n";
+		isAdded = false;
+	}
+
+	if (isAdded)
+	{
+		try
+		{
+			shared_ptr<CBody> cone = make_shared<CCone>(density, radius, height);
+			m_bodies.push_back(cone);
+		}
+		catch (invalid_argument const& e)
+		{
+			m_output << e.what();
+		}
+	}
+	return isAdded;
 }
 
 bool CController::CreateCylinder(std::istream& args)

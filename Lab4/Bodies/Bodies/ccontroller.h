@@ -5,6 +5,7 @@
 
 #include "CSphere.h"
 #include "CParallelepiped.h"
+#include "CCone.h"
 
 class CController
 {

@@ -1,7 +1,6 @@
-Parallelepiped:
+Cone:
 	Density: 20
-	Volume: 80
-	Mass: 1600
-	Width: 8
+	Volume: 335.103
+	Mass: 6702.06
+	BaseRadius: 8
 	Height: 5
-	Depth: 2

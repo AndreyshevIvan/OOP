@@ -10,6 +10,7 @@ CSphere::CSphere(double density, double radius)
 	{
 		throw std::invalid_argument("Radius should not be negative\n");
 	}
+
 	m_radius = radius;
 }
 
@@ -17,6 +18,7 @@ double CSphere::GetRadius() const
 {
 	return m_radius;
 }
+
 double CSphere::GetVolume() const
 {
 	return (pow(m_radius, 3) * M_PI) * 4 / 3;

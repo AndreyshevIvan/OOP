@@ -1,11 +1,6 @@
 #include "stdafx.h"
 #include "../bodies/ccontroller.h"
 
-#include "stdafx.h"
-#include <sstream>
-#include <boost/optional.hpp>
-#include <fstream>
-
 using namespace std;
 using boost::optional;
 using boost::none;

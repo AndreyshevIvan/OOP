@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CBody.h" />
+    <ClInclude Include="CCone.h" />
     <ClInclude Include="ccontroller.h" />
     <ClInclude Include="CParallelepiped.h" />
     <ClInclude Include="CSphere.h" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CBody.cpp" />
+    <ClCompile Include="CCone.cpp" />
     <ClCompile Include="ccontroller.cpp" />
     <ClCompile Include="CParallelepiped.cpp" />
     <ClCompile Include="CSphere.cpp" />
