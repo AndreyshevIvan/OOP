@@ -161,12 +161,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Bodies\bodies.h" />
+    <ClInclude Include="..\Bodies\CBody.h" />
+    <ClInclude Include="..\Bodies\ccontroller.h" />
+    <ClInclude Include="..\Bodies\CSphere.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BodiesTest.cpp" />
+    <ClCompile Include="..\Bodies\CBody.cpp" />
+    <ClCompile Include="..\Bodies\ccontroller.cpp" />
+    <ClCompile Include="..\Bodies\CSphere.cpp" />
+    <ClCompile Include="CControllerTest.cpp" />
+    <ClCompile Include="CSphereTest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

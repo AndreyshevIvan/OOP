@@ -149,12 +149,16 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bodies.h" />
+    <ClInclude Include="CBody.h" />
+    <ClInclude Include="ccontroller.h" />
+    <ClInclude Include="CSphere.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bodies.cpp" />
+    <ClCompile Include="CBody.cpp" />
+    <ClCompile Include="ccontroller.cpp" />
+    <ClCompile Include="CSphere.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
