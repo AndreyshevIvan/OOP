@@ -1,9 +1,6 @@
 #include "stdafx.h"
 
-#define _USE_MATH_DEFINES
 #include "../bodies/CSphere.h"
-#include <math.h>
-#include <fstream>
 
 struct Sphere_
 {

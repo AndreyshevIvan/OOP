@@ -4,6 +4,7 @@
 #include "CBody.h"
 
 #include "CSphere.h"
+#include "CParallelepiped.h"
 
 class CController
 {

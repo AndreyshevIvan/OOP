@@ -47,7 +47,7 @@ bool CController::Help()
 {
 	m_output << "Commands:\n"
 		<< "> Sphere <density> <radius>\n"
-		<< "> Parallelepiped <width> <height> <depth> <density>\n"
+		<< "> Parallelepiped <density> <width> <height> <depth>\n"
 		<< "> Cone <density> <radius> <height>\n"
 		<< "> Cylinder <density> <radius> <height>\n"
 		<< "> Compound - to begining add elements to compound body\n"
@@ -111,8 +111,32 @@ bool CController::CreateSphere(std::istream& args)
 
 bool CController::CreateParallelepiped(std::istream& args)
 {
-	args;
-	return true;
+	bool isAdded = true;
+	double density;
+	double width;
+	double height;
+	double depth;
+
+	if (!(args >> density) || !(args >> width) || !(args >> height) || !(args >> depth))
+	{
+		m_output << "Invalid count of arguments\n"
+			<< "Usage: Parallelepiped <density> <width> <height> <depth>\n";
+		isAdded = false;
+	}
+
+	if (isAdded)
+	{
+		try
+		{
+			shared_ptr<CBody> parallelepiped = make_shared<CParallelepiped>(density, width, height, depth);
+			m_bodies.push_back(parallelepiped);
+		}
+		catch (invalid_argument const& e)
+		{
+			m_output << e.what();
+		}
+	}
+	return isAdded;
 }
 
 bool CController::CreateCone(std::istream& args)

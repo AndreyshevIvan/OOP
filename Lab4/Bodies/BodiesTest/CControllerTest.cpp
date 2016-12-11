@@ -29,14 +29,10 @@ struct ControllerFixture : ControllerDependencies
 
 	void CheckCommandHandling(const string& command, const string& expectedOutput)
 	{
-		expectedOutput;
-		std::ofstream file;
-		file.open("output.txt");
 		output = stringstream();
 		input = stringstream();
 		BOOST_CHECK(input << command);
 		controller.HandleCommand();
-		file << output.str();
 		BOOST_CHECK_EQUAL(output.str(), expectedOutput);
 	}
 };
