@@ -3,6 +3,12 @@
 
 using namespace std;
 
+CBody::CBody(const std::string& type)
+	:m_type(type)
+	,m_density(0)
+{
+}
+
 CBody::CBody(const std::string& type, double density)
 	:m_type(type)
 {

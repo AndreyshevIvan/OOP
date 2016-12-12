@@ -3,11 +3,12 @@
 class CBody
 {
 public:
+	CBody(const std::string& type);
 	CBody(const std::string& type, double density);
 
 	double GetDensity() const;
 	virtual double GetVolume() const = 0;
-	double GetMass() const;
+	virtual double GetMass() const;
 	std::string ToString() const;
 
 protected:

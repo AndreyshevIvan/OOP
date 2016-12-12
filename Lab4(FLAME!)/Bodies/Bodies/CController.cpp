@@ -200,5 +200,23 @@ bool CController::CreateCylinder(std::istream& args)
 bool CController::CreateCompoundBody(std::istream& args)
 {
 	args;
-	return true;
+	bool isAdded = true;
+	shared_ptr<CCompound> compound = make_shared<CCompound>();
+	vector<shared_ptr<CBody>> elements;
+	CController compoundController(elements, m_input, m_output);
+
+	
+	while (m_output << "> ", compoundController.HandleCommand());
+	m_output << "Finish add to compound" "\n";
+
+	for (auto element : elements)
+	{
+		if (!compound->AddBody(element))
+		{
+			m_output << "Adding error\n";
+		}
+	}
+
+	m_bodies.push_back(compound);
+	return isAdded;
 }

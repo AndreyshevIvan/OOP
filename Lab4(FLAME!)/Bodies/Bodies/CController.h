@@ -7,6 +7,7 @@
 #include "CParallelepiped.h"
 #include "CCone.h"
 #include "CCylinder.h"
+#include "CCompound.h"
 
 class CController
 {

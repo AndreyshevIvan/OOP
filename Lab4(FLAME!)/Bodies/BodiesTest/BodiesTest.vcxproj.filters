@@ -42,6 +42,9 @@
     <ClInclude Include="..\Bodies\CParallelepiped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Bodies\CCompound.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Bodies\CParallelepiped.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Bodies\CCompound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

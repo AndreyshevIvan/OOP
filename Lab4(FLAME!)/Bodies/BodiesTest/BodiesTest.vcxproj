@@ -158,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Bodies\CBody.h" />
+    <ClInclude Include="..\Bodies\CCompound.h" />
     <ClInclude Include="..\Bodies\CCone.h" />
     <ClInclude Include="..\Bodies\CController.h" />
     <ClInclude Include="..\Bodies\CCylinder.h" />
@@ -168,6 +169,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Bodies\CBody.cpp" />
+    <ClCompile Include="..\Bodies\CCompound.cpp" />
     <ClCompile Include="..\Bodies\CCone.cpp" />
     <ClCompile Include="..\Bodies\CController.cpp" />
     <ClCompile Include="..\Bodies\CCylinder.cpp" />
