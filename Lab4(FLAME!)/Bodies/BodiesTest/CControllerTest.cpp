@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE(can_handle_negative_arguments)
 
 BOOST_AUTO_TEST_CASE(can_handle_ivalid_commands)
 {
-	CheckCommandHandling("Hello!", "Invalid command!\n");
+	CheckCommandHandling("Hello!", "> Invalid command!\n");
 	BOOST_CHECK(bodies.size() == 0);
 }
 

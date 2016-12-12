@@ -175,6 +175,7 @@
     <ClCompile Include="..\Bodies\CCylinder.cpp" />
     <ClCompile Include="..\Bodies\CParallelepiped.cpp" />
     <ClCompile Include="..\Bodies\CSphere.cpp" />
+    <ClCompile Include="CCompoundTest.cpp" />
     <ClCompile Include="CConeTest.cpp" />
     <ClCompile Include="CControllerTest.cpp" />
     <ClCompile Include="CCylinderTest.cpp" />

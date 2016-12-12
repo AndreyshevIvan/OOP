@@ -14,7 +14,7 @@ CController::CController(std::vector<std::shared_ptr<CBody>>& bodies, std::istre
 		{ "Parallelepiped", bind(&CController::CreateParallelepiped, this, _1) },
 		{ "Cone", bind(&CController::CreateCone, this, _1) },
 		{ "Cylinder", bind(&CController::CreateCylinder, this, _1) },
-		{ "Compound", bind(&CController::CreateCompoundBody, this, _1) },
+		{ "Compound", bind(&CController::CreateCompoundBody, this) },
 })
 {
 
@@ -28,18 +28,18 @@ bool CController::HandleCommand()
 		return false;
 	}
 
-	istringstream stream(commandLine);
+	istringstream strm(commandLine);
 	string action;
-	stream >> action;
+	strm >> action;
 
 	auto it = m_actions.find(action);
 	if (it != m_actions.end())
 	{
-		it->second(stream);
+		it->second(strm);
 		return true;
 	}
 
-	m_output << "Invalid command!" "\n";
+	m_output << "> Invalid command!" "\n";
 	return false;
 }
 
@@ -67,18 +67,58 @@ void CController::PrintAllBodies(std::vector<std::shared_ptr<CBody>> const& bodi
 	}
 	else
 	{
-		m_output << "You have not entered figures\n";
+		m_output << "> You have not entered figures\n";
 	}
 }
 
 void CController::FindBodyWithMaxMass(std::vector<std::shared_ptr<CBody>> const& bodies)
 {
-	bodies;
+	if (!bodies.empty())
+	{
+		auto maxMassBody = bodies.front();
+		for (auto body : bodies)
+		{
+			if (body->GetMass() > maxMassBody->GetMass())
+			{
+				maxMassBody = body;
+			}
+		}
+
+		m_output << "> Figure with max mass is:\n\t" << maxMassBody->ToString();
+	}
+	else
+	{
+		m_output << "> You have not entered figures";
+	}
 }
 
 void CController::FindBodyWithSmallestWeight(std::vector<std::shared_ptr<CBody>> const& bodies)
 {
-	bodies;
+	if (!bodies.empty())
+	{
+		auto minWeightBody = bodies.front();
+
+		const double G = 9.8;
+		const double WATER_DENSITY = 1000;
+
+		double minWeight = (minWeightBody->GetDensity() - WATER_DENSITY) * G * minWeightBody->GetVolume();
+		double weight;
+
+		for (auto body : bodies)
+		{
+			weight = (minWeightBody->GetDensity() - WATER_DENSITY) * G * minWeightBody->GetVolume();
+			if (weight < minWeight)
+			{
+				minWeightBody = body;
+				minWeight = weight;
+			}
+		}
+		m_output << "> Figure with min weight is:\n\t" << minWeightBody->ToString();
+	}
+	else
+	{
+		m_output << "> You have not entered figures";
+	}
 }
 
 bool CController::CreateSphere(std::istream& args)
@@ -186,8 +226,8 @@ bool CController::CreateCylinder(std::istream& args)
 	{
 		try
 		{
-			shared_ptr<CBody> cone = make_shared<CCone>(density, radius, height);
-			m_bodies.push_back(cone);
+			shared_ptr<CBody> cylinder = make_shared<CCone>(density, radius, height);
+			m_bodies.push_back(cylinder);
 		}
 		catch (invalid_argument const& e)
 		{
@@ -197,24 +237,19 @@ bool CController::CreateCylinder(std::istream& args)
 	return isAdded;
 }
 
-bool CController::CreateCompoundBody(std::istream& args)
+bool CController::CreateCompoundBody()
 {
-	args;
 	bool isAdded = true;
 	shared_ptr<CCompound> compound = make_shared<CCompound>();
 	vector<shared_ptr<CBody>> elements;
 	CController compoundController(elements, m_input, m_output);
 
-	
 	while (m_output << "> ", compoundController.HandleCommand());
 	m_output << "Finish add to compound" "\n";
 
 	for (auto element : elements)
 	{
-		if (!compound->AddBody(element))
-		{
-			m_output << "Adding error\n";
-		}
+		compound->AddBody(element);
 	}
 
 	m_bodies.push_back(compound);

@@ -30,8 +30,8 @@ double CCylinder::GetVolume() const
 	return (pow(m_radius, 2) * M_PI) * m_height;
 }
 
-void CCylinder::AddProperties(ostream& stream) const
+void CCylinder::AddProperties(ostream& strm) const
 {
-	stream << "\tBaseRadius: " << GetBaseRadius() << "\n";
-	stream << "\tHeight: " << GetHeight() << "\n";
+	strm << "\tBaseRadius: " << GetBaseRadius() << "\n";
+	strm << "\tHeight: " << GetHeight() << "\n";
 }

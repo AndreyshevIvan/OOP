@@ -24,7 +24,7 @@ double CSphere::GetVolume() const
 	return (pow(m_radius, 3) * M_PI) * 4 / 3;
 }
 
-void CSphere::AddProperties(ostream& stream) const
+void CSphere::AddProperties(ostream& strm) const
 {
-	stream << "\tRadius: " << GetRadius() << "\n";
+	strm << "\tRadius: " << GetRadius() << "\n";
 }

@@ -6,7 +6,7 @@ CCompound::CCompound()
 {
 }
 
-bool CCompound::AddBody(std::shared_ptr<CBody> const &element)
+bool CCompound::AddBody(std::shared_ptr<CBody> const& element)
 {
 	bool isAdded = true;
 	if (this == &(*element))
@@ -24,36 +24,46 @@ bool CCompound::AddBody(std::shared_ptr<CBody> const &element)
 
 double CCompound::GetMass() const
 {
-	auto Mass = [](double &a, std::shared_ptr<CBody> b)
+	double mass = 0;
+	for (auto element : m_elements)
 	{
-		return a + b->GetMass();
-
-	};
-	return std::accumulate(m_elements.begin(), m_elements.end(), 0.0, Mass);
+		mass += element->GetMass();
+	}
+	return mass;
 }
 
 double CCompound::GetVolume() const
 {
-	auto Volume = [](double &a, std::shared_ptr<CBody> b)
-	{
-		return a + b->GetVolume();
-
-	};
-	return std::accumulate(m_elements.begin(), m_elements.end(), 0.0, Volume);
-
-}
-
-void CCompound::AddProperties(std::ostream & strm) const
-{
-	size_t elementsCount = m_elements.size();
-	strm << "Compound body have " << std::to_string(elementsCount) << " elements\n";
+	double volume  = 0;
 	for (auto element : m_elements)
 	{
-		strm << "\t" << element->ToString();
+		volume += element->GetVolume();
+	}
+	return volume;
+}
+
+size_t CCompound::GetCompoundSize() const
+{
+	return m_elements.size();
+}
+
+void CCompound::AddProperties(std::ostream& strm) const
+{
+	strm << "> Compound body have " << std::to_string(GetCompoundSize()) << " elements:\n";
+	for (auto element : m_elements)
+	{
+		strm << "\t" << element->ToString() << "\n";
 	}
 }
 
 void CCompound::SetDensity()
 {
-	m_density = GetMass() / GetVolume();
+	if (GetVolume() == 0)
+	{
+		m_density = 0;
+	}
+	else
+	{
+		m_density = GetMass() / GetVolume();
+	}
 }

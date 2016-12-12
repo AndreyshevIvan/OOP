@@ -16,8 +16,8 @@ int main()
 	}
 
 	controller.PrintAllBodies(bodies);
-	//controller.FindBodyWithMaxMass(bodies);
-	//controller.FindBodyWithSmallestWeight(bodies);
+	controller.FindBodyWithMaxMass(bodies);
+	controller.FindBodyWithSmallestWeight(bodies);
 
 	return 0;
 }

@@ -89,5 +89,8 @@
     <ClCompile Include="..\Bodies\CCompound.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CCompoundTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

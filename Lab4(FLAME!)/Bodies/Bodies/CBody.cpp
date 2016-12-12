@@ -31,12 +31,12 @@ double CBody::GetMass() const
 
 string CBody::ToString() const
 {
-	std::ostringstream stream;
-	stream << m_type << ":\n"
+	std::ostringstream strm;
+	strm << m_type << ":\n"
 		<< "\tDensity: " << GetDensity() << "\n"
 		<< "\tVolume: " << GetVolume() << "\n"
 		<< "\tMass: " << GetMass() << "\n";
 
-	AddProperties(stream);
-	return stream.str();
+	AddProperties(strm);
+	return strm.str();
 }

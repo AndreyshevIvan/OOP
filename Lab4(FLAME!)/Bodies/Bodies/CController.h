@@ -25,7 +25,7 @@ private:
 	bool CreateParallelepiped(std::istream& args);
 	bool CreateCone(std::istream& args);
 	bool CreateCylinder(std::istream& args);
-	bool CreateCompoundBody(std::istream& args);
+	bool CreateCompoundBody();
 
 	typedef std::map<std::string, std::function<bool(std::istream& args)>> ActionMap;
 

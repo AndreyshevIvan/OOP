@@ -37,9 +37,9 @@ double CParallelepiped::GetVolume() const
 	return m_width * m_height * m_depth;
 }
 
-void CParallelepiped::AddProperties(ostream& stream) const
+void CParallelepiped::AddProperties(ostream& strm) const
 {
-	stream << "\tWidth: " << GetWidth() << "\n";
-	stream << "\tHeight: " << GetHeight() << "\n";
-	stream << "\tDepth: " << GetDepth() << "\n";
+	strm << "\tWidth: " << GetWidth() << "\n";
+	strm << "\tHeight: " << GetHeight() << "\n";
+	strm << "\tDepth: " << GetDepth() << "\n";
 }
