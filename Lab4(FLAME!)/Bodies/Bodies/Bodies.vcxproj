@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{87FA7F1A-7BD1-4D63-A118-798F3FBB4E79}</ProjectGuid>
+    <ProjectGuid>{AE61567D-A586-4565-B03F-233331363E69}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>CRationalTest</RootNamespace>
+    <RootNamespace>Bodies</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -94,9 +94,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(TargetPath)" --log_level=test_suite</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -111,9 +108,6 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(TargetPath)" --log_level=test_suite</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -132,9 +126,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(TargetPath)" --log_level=test_suite</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -153,22 +144,28 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(TargetPath)" --log_level=test_suite</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CRational\CRational.h" />
+    <ClInclude Include="CBody.h" />
+    <ClInclude Include="CCone.h" />
+    <ClInclude Include="CController.h" />
+    <ClInclude Include="CCylinder.h" />
+    <ClInclude Include="CParallelepiped.h" />
+    <ClInclude Include="CSphere.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\CRational\CRational.cpp" />
+    <ClCompile Include="CBody.cpp" />
+    <ClCompile Include="CCone.cpp" />
+    <ClCompile Include="CController.cpp" />
+    <ClCompile Include="CCylinder.cpp" />
+    <ClCompile Include="CParallelepiped.cpp" />
+    <ClCompile Include="CSphere.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="CRationalTest.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

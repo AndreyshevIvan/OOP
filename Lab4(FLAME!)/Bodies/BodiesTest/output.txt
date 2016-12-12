@@ -1,0 +1,6 @@
+Cylinder:
+	Density: 3
+	Volume: 3078.76
+	Mass: 9236.28
+	BaseRadius: 7
+	Height: 20
