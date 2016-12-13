@@ -17,7 +17,8 @@ public:
 	std::string GetDirection();
 	std::string GetGear();
 private:
-	bool Info(std::istream& arguments);
+	bool Help();
+	bool Info();
 	bool EngineOn(std::istream& arguments);
 	bool EngineOff(std::istream& arguments);
 	bool SetGear(std::istream& arguments);

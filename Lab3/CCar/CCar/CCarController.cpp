@@ -10,7 +10,8 @@ CCarController::CCarController(istream& input, ostream& output, CCar& car)
 	,m_output(output)
 	,m_car(car)
 	,m_actions({
-		{"Info", bind(&CCarController::Info, this, _1)},
+		{"Help", bind(&CCarController::Help, this)},
+		{"Info", bind(&CCarController::Info, this)},
 		{"EngineOn", bind(&CCarController::EngineOn, this, _1)},
 		{"EngineOff", bind(&CCarController::EngineOff, this, _1)},
 		{"SetGear", bind(&CCarController::SetGear, this, _1)},
@@ -36,7 +37,19 @@ bool CCarController::HandleCommand()
 	return false;
 }
 
-bool CCarController::Info(std::istream& arguments)
+bool CCarController::Help()
+{
+	m_output << "> Avalable commands:" "\n"
+		<< "> <Info> to check car status" "\n"
+		<< "> <EngineOn> to turn on engine" "\n"
+		<< "> <EngineOff> to turn off engine" "\n"
+		<< "> <SetGear> to set current gear" "\n"
+		<< "> <SetSpeed> to raise or lower speed" "\n";
+
+	return true;
+}
+
+bool CCarController::Info()
 {
 	string info;
 
@@ -102,9 +115,13 @@ bool CCarController::EngineOn(std::istream& arguments)
 
 bool CCarController::EngineOff(std::istream& arguments)
 {
-	if (!m_car.TurnOffEngine())
+	if (!m_car.IsEngineTurnOn())
 	{
-		m_output << "The engine is not turned on" "\n";
+		m_output << "> Engine is not turned on" "\n";
+	}
+	else if (!m_car.TurnOffEngine())
+	{
+		m_output << "> Engine avalable to turn off only if speed equal 0 and gear are neutral" "\n";
 	}
 
 	return true;

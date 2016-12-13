@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "..\CCar\CCar.h"
+#include <sstream>
+#include <fstream>
 
 using namespace std;
 

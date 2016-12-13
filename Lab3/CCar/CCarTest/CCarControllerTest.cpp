@@ -65,5 +65,13 @@ BOOST_AUTO_TEST_CASE(get_normal_info)
 	VerifyCommands("Info", "Engine is turned on \nDirection is: forward\nSpeed is: 57\nGear is: third\n");
 }
 
+BOOST_AUTO_TEST_CASE(Check_turn_off_on_engine)
+{
+	VerifyCommands("EngineOff", "> Engine is not turned on\n");
+	car.TurnOnEngine();
+	car.SetGear(1);
+	car.SetSpeed(1);
+	VerifyCommands("EngineOff", "> Engine avalable to turn off only if speed equal 0 and gear are neutral\n");
+}
 
 BOOST_AUTO_TEST_SUITE_END()

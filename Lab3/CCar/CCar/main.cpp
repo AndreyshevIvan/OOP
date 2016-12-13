@@ -14,9 +14,10 @@ int main()
 		cout << "> ";
 		if (!controller.HandleCommand())
 		{
-			cout << "Uncnown command!" "\n";
+			cout << "Unknown command!" "\n";
 		}
 	}
+	cout << "Good bye!" "\n";
 
 	return 0;
 }
