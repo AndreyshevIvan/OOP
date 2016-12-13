@@ -24,12 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\HTTPUrl\CHttpUrl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\HTTPUrl\CUrlParsingError.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -38,16 +32,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\HTTPUrl\CHttpUrl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\HTTPUrl\CUrlParsingError.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CHttpUrlTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CUrlParsingErrorTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
