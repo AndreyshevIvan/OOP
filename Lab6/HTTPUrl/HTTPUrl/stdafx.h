@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boost/algorithm/string.hpp>   
 #include <stdio.h>
 #include <tchar.h>
 

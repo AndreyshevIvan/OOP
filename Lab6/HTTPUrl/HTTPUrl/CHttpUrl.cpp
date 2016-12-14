@@ -4,35 +4,65 @@
 
 using namespace std;
 
-CHttpUrl::CHttpUrl(std::string const& url)
-	:m_url(url)
+CHttpUrl::CHttpUrl(string const& url)
+try
+	:m_url(ParseUrl(url))
+{}
+catch (CUrlParsingError const& e)
 {
-	try
-	{
-		smatch matches;
-		const regex urlRegularExpression(
-			"^(http?|https)"
-			"(://)"
-			"([0-9a-z\\.-]+)"
-			"(:?([0-9]+))"
-			"?(/(.*))?$"
-		);
+	throw CUrlParsingError(e);
+}
 
-		if (!std::regex_match(url, matches, urlRegularExpression))
-		{
-			throw CUrlParsingError("Invalid URL. Usage: <protocol>://<domain>:<port>/<document>\n");
-		}
-		(matches[1].str() == "http") ? m_protocol = Protocol::HTTP : m_protocol = Protocol::HTTPS;
-		m_domain = matches[3].str();
-		m_document = matches[6];
-	}
-	catch (CUrlParsingError const& e)
+std::string CHttpUrl::ParseUrl(string const& url)
+{
+	smatch matches;
+	std::regex urlRegularExpression("^([a-zA-Z]{4}|[a-zA-Z]{5})://([0-9a-z\\.-]+)(:?([0-9]+))?(/(.*))?$");
+
+	if (!std::regex_match(url, matches, urlRegularExpression))
 	{
-		throw CUrlParsingError(e);
+		throw CUrlParsingError("Invalid URL. Usage: <protocol>://<domain>:<port>/<document>\n");
+	}
+
+	m_protocol = ParseProtocol(matches[1].str());
+	string test(matches[2]);
+	m_domain = test;
+	cout << "test";
+
+	string port = matches[4].str();
+	if (port != "")
+	{
+		m_port = static_cast<unsigned short>(stoi(port));
+	}
+	m_document = matches[6].str();
+
+	return GetStringURL();
+}
+
+Protocol CHttpUrl::ParseProtocol(string protocol)
+{
+	Protocol newProtocol = Protocol::HTTP;
+	protocol = boost::algorithm::to_lower_copy(protocol);
+	if (protocol == "https" || protocol == "http")
+	{
+		if (protocol == "http")
+		{
+			newProtocol = Protocol::HTTP;
+			m_port = 80;
+		}
+		else
+		{
+			newProtocol = Protocol::HTTPS;
+			m_port = 443;
+		}
+		return newProtocol;
+	}
+	else
+	{
+		throw CUrlParsingError("Invalid protocol. Usage http or https\n");
 	}
 }
 
-CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document, Protocol protocol, unsigned short port)
+CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protocol, unsigned short port)
 	:m_domain(domain)
 	,m_document(document)
 	,m_protocol(protocol)
@@ -66,9 +96,22 @@ unsigned short CHttpUrl::GetPort() const
 	return m_port;
 }
 
-std::string CHttpUrl::ToString()
+std::string CHttpUrl::GetStringURL()
 {
+	string url;
+	string protocol;
+	string port;
 
+	(GetProtocol() == Protocol::HTTP) ? protocol = "http" : protocol = "https";
+	port = to_string(GetPort());
+
+	url = protocol + "://" + GetDomain() + GetDocument() + "\n";
+
+	return url;
+}
+
+std::string CHttpUrl::Info()
+{
 	std::string result;
 	std::string protocol;
 	std::string port;
@@ -76,7 +119,7 @@ std::string CHttpUrl::ToString()
 	(GetProtocol() == Protocol::HTTP) ? protocol = "http" : protocol = "https";
 	port = to_string(GetPort());
 
-	result = "URL: " + GetURL() + "\n";
+	result = "URL: " + GetStringURL();
 	result += "\tProtocol: " + protocol + "\n";
 	result += "\tDomain: " + GetDomain() + "\n";
 	result += "\tPort: " + port + "\n";

@@ -19,7 +19,11 @@ public:
 	std::string GetDocument() const;
 	Protocol GetProtocol() const;
 	unsigned short GetPort() const;
-	std::string ToString();
+
+	std::string Info();
+	std::string GetStringURL();
+	std::string ParseUrl(std::string const& url);
+	Protocol ParseProtocol(std::string protocol);
 
 private:
 	std::string m_url;

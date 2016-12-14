@@ -4,19 +4,14 @@
 
 int main()
 {
-	std::string strToParse;
-	while (!std::cin.eof() && !std::cin.fail())
+	try
 	{
-		std::cin >> strToParse;
-		try
-		{
-			CHttpUrl parsedUrl(strToParse);
-			std::cout << parsedUrl.ToString();
-		}
-		catch (CUrlParsingError const& e)
-		{
-			std::cout << e.what();
-		}
+		std::string strToParse = "http://vk.com/document";
+		CHttpUrl parsedUrl(strToParse);
+	}
+	catch (CUrlParsingError const& e)
+	{
+		std::cout << e.what();
 	}
 
 	return 0;
