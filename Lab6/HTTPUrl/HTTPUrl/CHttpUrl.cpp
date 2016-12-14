@@ -110,6 +110,10 @@ void CHttpUrl::ParsePort(string const& url, size_t& pos)
 		}
 		pos++;
 	}
+	if (m_port == 0)
+	{
+		throw CUrlParsingError("Port is never be equal zero\n");
+	}
 }
 
 void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
