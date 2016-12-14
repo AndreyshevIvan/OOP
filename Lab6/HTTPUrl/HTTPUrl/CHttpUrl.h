@@ -4,8 +4,8 @@
 
 enum Protocol
 {
-	HTTP,
-	HTTPS,
+	HTTP = 80,
+	HTTPS = 433,
 };
 
 class CHttpUrl
@@ -21,9 +21,6 @@ public:
 	Protocol GetProtocol() const;
 	unsigned short GetPort() const;
 
-	std::string Info();
-	std::string GetStringURL();
-
 	void ParseProtocol(std::string const& protocol, size_t& pos);
 	void ParseDomain(std::string const& domain, size_t& pos);
 	void ParsePort(std::string const& url, size_t& pos);
@@ -38,3 +35,5 @@ private:
 	unsigned short m_port;
 
 };
+
+std::string Info(CHttpUrl const& url);

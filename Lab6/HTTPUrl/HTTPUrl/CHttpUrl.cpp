@@ -18,6 +18,7 @@ try
 	}
 	ParseDocument(url, pos);
 
+	m_url = url;
 }
 catch (CUrlParsingError const& e)
 {
@@ -139,6 +140,24 @@ CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protoc
 
 	size_t pos = 0;
 	ParseDocument(m_document, pos);
+
+	std::string portStr = "";
+	std::string protocolStr;
+	if (protocol == Protocol::HTTP)
+	{
+		(protocolStr = "http://");
+	}
+	else
+	{
+		(protocolStr = "https://");
+	}
+
+	if (port == static_cast<unsigned short>(Protocol::HTTP) || port == static_cast<unsigned short>(Protocol::HTTPS))
+	{
+		portStr = ":" + port;
+	}
+
+	m_url = protocolStr + m_domain + portStr + m_document;
 }
 
 std::string CHttpUrl::GetURL() const
@@ -166,34 +185,27 @@ unsigned short CHttpUrl::GetPort() const
 	return m_port;
 }
 
-std::string CHttpUrl::GetStringURL()
-{
-	string url;
-	string protocol;
-	string port;
-
-	(GetProtocol() == Protocol::HTTP) ? protocol = "http" : protocol = "https";
-	port = to_string(GetPort());
-
-	url = protocol + "://" + GetDomain() + GetDocument() + "\n";
-
-	return url;
-}
-
-std::string CHttpUrl::Info()
+std::string Info(CHttpUrl const& url)
 {
 	std::string result;
 	std::string protocol;
 	std::string port;
 
-	(GetProtocol() == Protocol::HTTP) ? protocol = "http" : protocol = "https";
-	port = to_string(GetPort());
+	if (url.GetProtocol() == Protocol::HTTP)
+	{
+		protocol = "http";
+	}
+	else
+	{
+		protocol = "https";
+	}
+	port = to_string(url.GetPort());
 
-	result = "URL: " + GetStringURL();
+	result = "URL: " + url.GetURL() + "\n";
 	result += "\tProtocol: " + protocol + "\n";
-	result += "\tDomain: " + GetDomain() + "\n";
+	result += "\tDomain: " + url.GetDomain() + "\n";
 	result += "\tPort: " + port + "\n";
-	result += "\tDocument: " + GetDocument() + "\n";
+	result += "\tDocument: " + url.GetDocument() + "\n";
 
 	return result;
 }

@@ -1,0 +1,5 @@
+URL: http://vk.com:77/doc
+	Protocol: http
+	Domain: vk.com
+	Port: 77
+	Document: /doc

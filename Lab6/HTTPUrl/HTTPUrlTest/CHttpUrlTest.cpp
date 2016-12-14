@@ -28,16 +28,18 @@ BOOST_AUTO_TEST_CASE(get_functions_can_return_values)
 
 BOOST_AUTO_TEST_CASE(info_can_return_full_information_about_url)
 {
-	std::string refStr = "URL: http://vk.com/doc\n\tProtocol: http\n\tDomain: vk.com\n\tPort: 77\n\tDocument: /doc\n";
+	std::string refStr = "URL: http://vk.com:77/doc\n\tProtocol: http\n\tDomain: vk.com\n\tPort: 77\n\tDocument: /doc\n";
+	std::ofstream file("output.txt");
 	std::string url = "http://vk.com:77/doc";
-	BOOST_CHECK_EQUAL(CHttpUrl(url).Info(), refStr);
+	file << Info(CHttpUrl(url));
+	BOOST_CHECK_EQUAL(Info(CHttpUrl(url)), refStr);
 }
 
 BOOST_AUTO_TEST_CASE(get_string_with_url_only)
 {
-	std::string refStr = "https://site.com/documentation\n";
+	std::string refStr = "https://site.com:0/documentation";
 	std::string url = "https://site.com:0/documentation";
-	BOOST_CHECK_EQUAL(CHttpUrl(url).GetStringURL(), refStr);
+	BOOST_CHECK_EQUAL(CHttpUrl(url).GetURL(), refStr);
 }
 
 BOOST_AUTO_TEST_CASE(check_get_functions_with_invalid_url)
@@ -70,7 +72,7 @@ BOOST_AUTO_TEST_CASE(exception_invalid_domain)
 BOOST_AUTO_TEST_CASE(exception_invalid_port)
 {
 	BOOST_REQUIRE_THROW(CHttpUrl("http://site.com:/document"), std::invalid_argument);
-	BOOST_REQUIRE_THROW(CHttpUrl("http://site.com:1000000/document"), std::invalid_argument);
+	BOOST_REQUIRE_THROW(CHttpUrl("http://site.com:65536/document"), std::invalid_argument);
 	BOOST_REQUIRE_THROW(CHttpUrl("http://site.com:-0/document"), std::invalid_argument);
 }
 
