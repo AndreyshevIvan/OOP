@@ -5,11 +5,12 @@
 using namespace std;
 
 CHttpUrl::CHttpUrl(string const& url)
+try
 {
 	size_t pos = 0;
 	ParseProtocol(url, pos);
 	ParseDomain(url, pos);
-
+	
 	if (url[pos] == ':')
 	{
 		pos++;
@@ -17,7 +18,10 @@ CHttpUrl::CHttpUrl(string const& url)
 	}
 	ParseDocument(url, pos);
 
-	cout << GetStringURL();
+}
+catch (CUrlParsingError const& e)
+{
+	std::cout << e.what();
 }
 
 void CHttpUrl::ParseProtocol(string const& url, size_t& pos)
@@ -86,6 +90,10 @@ void CHttpUrl::ParseDomain(string const& url, size_t& pos)
 
 void CHttpUrl::ParsePort(string const& url, size_t& pos)
 {
+	if (url[pos] > '9' || url[pos] < '0')
+	{
+		throw CUrlParsingError("Unknown port\n");
+	}
 	m_port = 0;
 	unsigned short digit = 0;
 	while (url[pos] <= '9' && url[pos] >= '0')
@@ -97,11 +105,10 @@ void CHttpUrl::ParsePort(string const& url, size_t& pos)
 		}
 		else
 		{
-			throw CUrlParsingError("Invalid port\n");
+			throw CUrlParsingError("Port longer than it possible\n");
 		}
 		pos++;
 	}
-	cout << m_port;
 }
 
 void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
@@ -129,6 +136,9 @@ CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protoc
 	{
 		throw CUrlParsingError("Empty domain\n");
 	}
+
+	size_t pos = 0;
+	ParseDocument(m_document, pos);
 }
 
 std::string CHttpUrl::GetURL() const

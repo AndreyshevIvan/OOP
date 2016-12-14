@@ -12,7 +12,6 @@ class CHttpUrl
 {
 public:
 	CHttpUrl(std::string const& url);
-	~CHttpUrl() = default;
 
 	CHttpUrl(std::string const& domain, std::string const& document, Protocol protocol = HTTP, unsigned short port = 80);
 	

@@ -1,23 +1,11 @@
 #include "stdafx.h"
 #include "CHttpUrl.h"
 #include <sstream>
+#include <fstream>
 
 int main()
 {
-	std::string strToParse;
-
-	while (!std::cin.eof() && !std::cin.fail())
-	{
-		try
-		{
-			std::cin >> strToParse;
-			CHttpUrl parsedUrl(strToParse);
-		}
-		catch (CUrlParsingError const& e)
-		{
-			std::cout << e.what();
-		}
-	}
-
+	std::string url = "https://site.com:0/documentation";
+	std::cout << CHttpUrl(url).GetStringURL();
 	return 0;
 }
