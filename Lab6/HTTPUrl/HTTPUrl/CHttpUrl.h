@@ -12,6 +12,8 @@ class CHttpUrl
 {
 public:
 	CHttpUrl(std::string const& url);
+	~CHttpUrl() = default;
+
 	CHttpUrl(std::string const& domain, std::string const& document, Protocol protocol = HTTP, unsigned short port = 80);
 	
 	std::string GetURL() const;
@@ -22,8 +24,11 @@ public:
 
 	std::string Info();
 	std::string GetStringURL();
-	std::string ParseUrl(std::string const& url);
-	Protocol ParseProtocol(std::string protocol);
+
+	void ParseProtocol(std::string const& protocol, size_t& pos);
+	void ParseDomain(std::string const& domain, size_t& pos);
+	void ParsePort(std::string const& url, size_t& pos);
+	void ParseDocument(std::string const& url, size_t& pos);
 
 private:
 	std::string m_url;

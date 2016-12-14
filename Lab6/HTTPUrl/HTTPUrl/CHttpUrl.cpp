@@ -5,61 +5,118 @@
 using namespace std;
 
 CHttpUrl::CHttpUrl(string const& url)
-try
-	:m_url(ParseUrl(url))
-{}
-catch (CUrlParsingError const& e)
 {
-	throw CUrlParsingError(e);
+	size_t pos = 0;
+	ParseProtocol(url, pos);
+	ParseDomain(url, pos);
+
+	if (url[pos] == ':')
+	{
+		pos++;
+		ParsePort(url, pos);
+	}
+	ParseDocument(url, pos);
+
+	cout << GetStringURL();
 }
 
-std::string CHttpUrl::ParseUrl(string const& url)
+void CHttpUrl::ParseProtocol(string const& url, size_t& pos)
 {
-	smatch matches;
-	std::regex urlRegularExpression("^([a-zA-Z]{4}|[a-zA-Z]{5})://([0-9a-z\\.-]+)(:?([0-9]+))?(/(.*))?$");
-
-	if (!std::regex_match(url, matches, urlRegularExpression))
+	string protocolStr = "";
+	while(pos != url.size())
 	{
-		throw CUrlParsingError("Invalid URL. Usage: <protocol>://<domain>:<port>/<document>\n");
-	}
-
-	m_protocol = ParseProtocol(matches[1].str());
-	string test(matches[2]);
-	m_domain = test;
-	cout << "test";
-
-	string port = matches[4].str();
-	if (port != "")
-	{
-		m_port = static_cast<unsigned short>(stoi(port));
-	}
-	m_document = matches[6].str();
-
-	return GetStringURL();
-}
-
-Protocol CHttpUrl::ParseProtocol(string protocol)
-{
-	Protocol newProtocol = Protocol::HTTP;
-	protocol = boost::algorithm::to_lower_copy(protocol);
-	if (protocol == "https" || protocol == "http")
-	{
-		if (protocol == "http")
+		if (!(url[pos] > 'a' && url[pos] < 'z') && !(url[pos] > 'A' && url[pos] < 'Z'))
 		{
-			newProtocol = Protocol::HTTP;
-			m_port = 80;
+			break;
 		}
 		else
 		{
-			newProtocol = Protocol::HTTPS;
-			m_port = 443;
+			protocolStr += url[pos];
 		}
-		return newProtocol;
+		pos++;
+	}
+
+	protocolStr = boost::algorithm::to_lower_copy(protocolStr);
+	if (protocolStr == "http")
+	{
+		m_port = 80;
+		m_protocol = Protocol::HTTP;
+	}
+	else if (protocolStr == "https")
+	{
+		m_port = 443;
+		m_protocol = Protocol::HTTPS;
 	}
 	else
 	{
 		throw CUrlParsingError("Invalid protocol. Usage http or https\n");
 	}
+
+	if (url.find("://") == pos)
+	{
+		pos += 3;
+	}
+	else
+	{
+		throw CUrlParsingError("Invalid URL. Needed :// after protocol\n");
+	}
+}
+
+void CHttpUrl::ParseDomain(string const& url, size_t& pos)
+{
+	while (pos != url.size())
+	{
+		if (url[pos] == ':' || url[pos] == '/')
+		{
+			break;
+		}
+		else
+		{
+			m_domain += url[pos];
+		}
+		pos++;
+	}
+
+	if (m_domain == "")
+	{
+		throw CUrlParsingError("Invalid domain\n");
+	}
+
+}
+
+void CHttpUrl::ParsePort(string const& url, size_t& pos)
+{
+	m_port = 0;
+	unsigned short digit = 0;
+	while (url[pos] <= '9' && url[pos] >= '0')
+	{
+		digit = (int)url[pos] - '0';
+		if ((USHRT_MAX / 10) - digit > m_port)
+		{
+			m_port = m_port * 10 + digit;
+		}
+		else
+		{
+			throw CUrlParsingError("Invalid port\n");
+		}
+		pos++;
+	}
+	cout << m_port;
+}
+
+void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
+{
+	string documentStr = "";
+	if (url[pos] != '/')
+	{
+		documentStr += '/';
+	}
+	while (pos != url.size())
+	{
+		documentStr += url[pos];
+		pos++;
+	}
+	m_document = documentStr;
 }
 
 CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protocol, unsigned short port)
@@ -68,7 +125,10 @@ CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protoc
 	,m_protocol(protocol)
 	,m_port(port)
 {
-
+	if (domain.empty())
+	{
+		throw CUrlParsingError("Empty domain\n");
+	}
 }
 
 std::string CHttpUrl::GetURL() const
