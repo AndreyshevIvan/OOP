@@ -18,11 +18,30 @@ try
 	}
 	ParseDocument(url, pos);
 
-	m_url = url;
+	std::string portStr = "";
+	std::string protocolStr;
+	if (m_protocol == Protocol::HTTP)
+	{
+		(protocolStr = "http://");
+		if (m_port != 80)
+		{
+			portStr = ":" + to_string(m_port);
+		}
+	}
+	else
+	{
+		(protocolStr = "https://");
+		if (m_port != 433)
+		{
+			portStr = ":" + to_string(m_port);
+		}
+	}
+
+	m_url = protocolStr + m_domain + portStr + m_document;
 }
 catch (CUrlParsingError const& e)
 {
-	std::cout << e.what();
+	throw CUrlParsingError(e);
 }
 
 void CHttpUrl::ParseProtocol(string const& url, size_t& pos)
@@ -132,6 +151,7 @@ void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
 }
 
 CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protocol, unsigned short port)
+try
 	:m_domain(domain)
 	,m_document(document)
 	,m_protocol(protocol)
@@ -147,21 +167,28 @@ CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protoc
 
 	std::string portStr = "";
 	std::string protocolStr;
-	if (protocol == Protocol::HTTP)
+	if (m_protocol == Protocol::HTTP)
 	{
 		(protocolStr = "http://");
+		if (m_port != 80)
+		{
+			portStr = ":" + to_string(m_port);
+		}
 	}
 	else
 	{
 		(protocolStr = "https://");
-	}
-
-	if (port == static_cast<unsigned short>(Protocol::HTTP) || port == static_cast<unsigned short>(Protocol::HTTPS))
-	{
-		portStr = ":" + port;
+		if (m_port != 433)
+		{
+			portStr = ":" + to_string(m_port);
+		}
 	}
 
 	m_url = protocolStr + m_domain + portStr + m_document;
+}
+catch (CUrlParsingError const& e)
+{
+	throw CUrlParsingError(e);
 }
 
 std::string CHttpUrl::GetURL() const

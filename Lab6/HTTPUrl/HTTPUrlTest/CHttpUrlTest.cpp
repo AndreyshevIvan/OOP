@@ -36,9 +36,15 @@ BOOST_AUTO_TEST_SUITE(class_functions)
 
 	BOOST_AUTO_TEST_CASE(get_string_with_url_only)
 	{
-		std::string refStr = "https://site.com:1/documentation";
-		std::string url = "https://site.com:1/documentation";
+		std::string refStr = "https://site.com:100/documentation";
+		std::string url = "https://site.com:100/documentation";
 		BOOST_CHECK_EQUAL(CHttpUrl(url).GetURL(), refStr);
+	}
+
+	BOOST_AUTO_TEST_CASE(port_equal_1_avalable)
+	{
+		std::string url = "https://site.com:1/documentation";
+		BOOST_CHECK_EQUAL(CHttpUrl(url).GetPort(), 1);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
