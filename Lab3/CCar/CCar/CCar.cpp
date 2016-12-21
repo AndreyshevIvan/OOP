@@ -55,28 +55,25 @@ bool CCar::TurnOffEngine()
 
 bool CCar::SetGear(int gear)
 {
-	bool isGearChange = false;
 	if (!m_isEngineOn)
 		return false;
 
-	if (
-		((gear == -1) && ((m_speed == 0 && (m_gear == Gear::NEUTRAL || m_gear == Gear::FIFTH)) || (m_gear == Gear::REAR))) ||
+	if (((gear == -1) && ((m_speed == 0 && (m_gear == Gear::NEUTRAL || m_gear == Gear::FIFTH)) || (m_gear == Gear::REAR))) ||
 		(gear == 0) ||
 		((gear == 1) && ((m_gear == Gear::REAR && m_speed == 0) || (m_gear == Gear::NEUTRAL && m_direction == Direction::STAY) ||
 		(m_direction == Direction::FORWARD && m_speed >= 0 && m_speed <= 30) || (m_gear == Gear::FIRST))) ||
 		((gear == 2) && (m_speed >= 20 && m_speed <= 50)) ||
 		((gear == 3) && (m_speed >= 30 && m_speed <= 60)) ||
 		((gear == 4) && (m_speed >= 40 && m_speed <= 90)) ||
-		((gear == 5) && (m_speed >= 50 && m_speed <= 150))
-		)
+		((gear == 5) && (m_speed >= 50 && m_speed <= 150)))
 	{
-		isGearChange = true;
-	}
-
-	if (isGearChange)
 		m_gear = Gear(gear);
-
-	return isGearChange;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool CCar::SetSpeed(int speed)

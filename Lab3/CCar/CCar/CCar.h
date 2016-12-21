@@ -33,6 +33,9 @@ public:
 	bool TurnOffEngine();
 	bool SetGear(int gear);
 	bool SetSpeed(int speed);
+	bool IsCarOnSecondGear(int gear = 0);
+	bool IsCarOnThirdGear(int gear = 0);
+
 private:
 	Gear m_gear;
 	bool m_isEngineOn;

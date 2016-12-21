@@ -119,12 +119,13 @@ void CHttpUrl::ParsePort(string const& url, size_t& pos)
 	while (url[pos] <= '9' && url[pos] >= '0')
 	{
 		digit = (int)url[pos] - '0';
-		if ((USHRT_MAX / 10) - digit > m_port)
+		if ((USHRT_MAX - digit) / 10 >= m_port)
 		{
 			m_port = m_port * 10 + digit;
 		}
 		else
 		{
+			cout << m_port;
 			throw CUrlParsingError("Port longer than it possible\n");
 		}
 		pos++;
