@@ -1,0 +1,10 @@
+#include "stdafx.h"
+
+BOOST_AUTO_TEST_SUITE(suite_1)
+
+BOOST_AUTO_TEST_CASE(case_1)
+{
+	BOOST_CHECK(true);
+}
+
+BOOST_AUTO_TEST_SUITE_END()
