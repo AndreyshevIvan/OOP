@@ -73,7 +73,7 @@ void CHttpUrl::ParseProtocol(string const& url, size_t& pos)
 	}
 	else
 	{
-		throw CUrlParsingError("Invalid protocol. Usage http or https\n");
+		throw CUrlParsingError("Invalid protocol. Use http or https\n");
 	}
 
 	if (url.find("://") == pos)
@@ -125,7 +125,6 @@ void CHttpUrl::ParsePort(string const& url, size_t& pos)
 		}
 		else
 		{
-			cout << m_port;
 			throw CUrlParsingError("Port longer than it possible\n");
 		}
 		pos++;
@@ -151,8 +150,55 @@ void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
 	m_document = documentStr;
 }
 
+CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document)
+	:m_domain(domain)
+	,m_document(document)
+{
+	if (domain.empty())
+	{
+		throw CUrlParsingError("Empty domain\n");
+	}
+
+	size_t pos = 0;
+	ParseDocument(m_document, pos);
+
+	
+	m_protocol = Protocol::HTTP;
+	std::string protocolStr = "http://";
+	m_port = 80;
+
+	m_url = protocolStr + m_domain + m_document;
+}
+
+CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document, Protocol protocol)
+	:m_domain(domain)
+	,m_document(document)
+	,m_protocol(protocol)
+{
+	if (domain.empty())
+	{
+		throw CUrlParsingError("Empty domain\n");
+	}
+
+	size_t pos = 0;
+	ParseDocument(m_document, pos);
+
+	std::string protocolStr;
+	if (m_protocol == Protocol::HTTP)
+	{
+		protocolStr = "http://";
+		m_port = 80;
+	}
+	else
+	{
+		protocolStr = "https://";
+		m_port = 433;
+	}
+
+	m_url = protocolStr + m_domain + m_document;
+}
+
 CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protocol, unsigned short port)
-try
 	:m_domain(domain)
 	,m_document(document)
 	,m_protocol(protocol)
@@ -186,10 +232,6 @@ try
 	}
 
 	m_url = protocolStr + m_domain + portStr + m_document;
-}
-catch (CUrlParsingError const& e)
-{
-	throw CUrlParsingError(e);
 }
 
 std::string CHttpUrl::GetURL() const
