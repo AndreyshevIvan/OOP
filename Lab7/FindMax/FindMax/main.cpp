@@ -1,7 +1,10 @@
 #include "stdafx.h"
-#include "FindMax.h"
+#include "FindMaxEx.h"
 
-int main()
+int main(int argc, char *argv[])
 {
+	(void)argc;
+	(void)argv;
+
 	return 0;
 }
