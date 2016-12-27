@@ -24,7 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\CMyArray\CMyArray.h">
+    <ClInclude Include="CMyStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +35,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CMyArrayTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CMyArray\CMyArray.cpp">
+    <ClCompile Include="CMyStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

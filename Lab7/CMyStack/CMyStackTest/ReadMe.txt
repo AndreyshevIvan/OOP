@@ -1,27 +1,27 @@
 ========================================================================
-    CONSOLE APPLICATION : CMyArrayTest Project Overview
+    CONSOLE APPLICATION : CMyStackTest Project Overview
 ========================================================================
 
-AppWizard has created this CMyArrayTest application for you.
+AppWizard has created this CMyStackTest application for you.
 
 This file contains a summary of what you will find in each of the files that
-make up your CMyArrayTest application.
+make up your CMyStackTest application.
 
 
-CMyArrayTest.vcxproj
+CMyStackTest.vcxproj
     This is the main project file for VC++ projects generated using an Application Wizard.
     It contains information about the version of Visual C++ that generated the file, and
     information about the platforms, configurations, and project features selected with the
     Application Wizard.
 
-CMyArrayTest.vcxproj.filters
+CMyStackTest.vcxproj.filters
     This is the filters file for VC++ projects generated using an Application Wizard. 
     It contains information about the association between the files in your project 
     and the filters. This association is used in the IDE to show grouping of files with
     similar extensions under a specific node (for e.g. ".cpp" files are associated with the
     "Source Files" filter).
 
-CMyArrayTest.cpp
+CMyStackTest.cpp
     This is the main application source file.
 
 /////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named CMyArrayTest.pch and a precompiled types file named StdAfx.obj.
+    named CMyStackTest.pch and a precompiled types file named StdAfx.obj.
 
 /////////////////////////////////////////////////////////////////////////////
 Other notes:
