@@ -5,7 +5,7 @@
 enum Protocol
 {
 	HTTP = 80,
-	HTTPS = 433,
+	HTTPS = 443,
 };
 
 class CHttpUrl

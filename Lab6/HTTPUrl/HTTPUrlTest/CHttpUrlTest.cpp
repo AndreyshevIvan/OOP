@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_SUITE(Url_can_return_)
 		BOOST_CHECK_EQUAL(url.GetPort(), 80);
 	}
 
-	BOOST_AUTO_TEST_CASE(port_433_for_https_protocol)
+	BOOST_AUTO_TEST_CASE(port_443_for_https_protocol)
 	{
 		CHttpUrl url("https://domain.ru/document");
 		BOOST_CHECK_EQUAL(url.GetPort(), 443);
@@ -41,17 +41,26 @@ BOOST_AUTO_TEST_SUITE(Url_can_return_)
 		std::string url = "https://site.com:100/documentation";
 		BOOST_CHECK_EQUAL(CHttpUrl(url).GetURL(), refStr);
 	}
+
 	BOOST_AUTO_TEST_CASE(string_without_port_if_construct_with_three_args_and_protocol_equal_HTTPS)
 	{
 		CHttpUrl url("yandex.ru", "doc.txt", Protocol::HTTPS);
-		BOOST_CHECK_EQUAL(url.GetProtocol(), 433);
+		BOOST_CHECK_EQUAL(url.GetProtocol(), 443);
 		BOOST_CHECK_EQUAL(url.GetURL(), "https://yandex.ru/doc.txt");
 	}
+
 	BOOST_AUTO_TEST_CASE(string_without_port_if_construct_with_three_args_and_protocol_equal_HTTP)
 	{
 		CHttpUrl url("yandex.ru", "doc.txt", Protocol::HTTPS);
-		BOOST_CHECK_EQUAL(url.GetProtocol(), 433);
+		BOOST_CHECK_EQUAL(url.GetProtocol(), 443);
 		BOOST_CHECK_EQUAL(url.GetURL(), "https://yandex.ru/doc.txt");
+	}
+
+	BOOST_AUTO_TEST_CASE(string_without_port_if_construct_with_string_with_https_and_withput_port)
+	{
+		CHttpUrl url("https://vk.com/doc");
+		BOOST_CHECK_EQUAL(url.GetProtocol(), 443);
+		BOOST_CHECK_EQUAL(url.GetURL(), "https://vk.com/doc");
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -77,7 +86,7 @@ BOOST_AUTO_TEST_SUITE(Url_can_be_construct_with_)
 		CHttpUrl url2("vk.com", "document", Protocol::HTTPS);
 		BOOST_CHECK_EQUAL(url2.GetProtocol(), Protocol::HTTPS);
 		BOOST_CHECK_EQUAL(url2.GetDomain(), "vk.com");
-		BOOST_CHECK_EQUAL(url2.GetPort(), 433);
+		BOOST_CHECK_EQUAL(url2.GetPort(), 443);
 		BOOST_CHECK_EQUAL(url2.GetDocument(), "/document");
 	}
 	BOOST_AUTO_TEST_CASE(domain_and_document_and_protocol_and_port)

@@ -31,7 +31,7 @@ try
 	else
 	{
 		(protocolStr = "https://");
-		if (m_port != 433)
+		if (m_port != 443)
 		{
 			portStr = ":" + to_string(m_port);
 		}
@@ -191,7 +191,7 @@ CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document, Proto
 	else
 	{
 		protocolStr = "https://";
-		m_port = 433;
+		m_port = 443;
 	}
 
 	m_url = protocolStr + m_domain + m_document;
@@ -224,7 +224,7 @@ CHttpUrl::CHttpUrl(string const& domain, string const& document, Protocol protoc
 	else
 	{
 		(protocolStr = "https://");
-		if (m_port != 433)
+		if (m_port != 443)
 		{
 			portStr = ":" + to_string(m_port);
 		}

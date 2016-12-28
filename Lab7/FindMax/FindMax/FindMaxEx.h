@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 template <class T, class Less>
-bool FindMaxEx(std::vector<T> const& arr, T & maxValue, Less const& less)
+bool FindMaxEx(std::vector<T> const& arr, T& maxValue, Less const& less)
 {
 	if (arr.empty())
 	{

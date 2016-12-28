@@ -12,25 +12,25 @@ public:
 		CopyNodes(stack.m_top);
 	}
 
-	CStack(CStack<T> && otherStack)
+	CStack(CStack<T> && cloneStack)
 	{
-		if (this == &otherStack)
+		if (this == &cloneStack)
 		{
-			throw std::logic_error("Self moveing");
+			throw std::logic_error("Self move assigment");
 		}
 
-		m_top = otherStack.m_top;
-		m_stackSize = otherStack.m_stackSize;
+		m_top = std::move(cloneStack.m_top);
+		m_stackSize = std::move(cloneStack.m_stackSize);
 
-		otherStack.m_top = nullptr;
-		otherStack.m_stackSize = 0;
+		cloneStack.m_top = nullptr;
+		cloneStack.m_stackSize = 0;
 	}
 
 	void Push(T const& element)
 	{
 		std::shared_ptr<Node> newNode(new Node);
 		newNode->content = element;
-		if (m_top)
+		if (!Empty())
 		{
 			newNode->next = m_top;
 		}
@@ -41,7 +41,7 @@ public:
 
 	T GetTop()
 	{
-		if (!m_top)
+		if (Empty())
 		{
 			throw std::logic_error("Imposible return content from empty stack");
 		}
@@ -51,7 +51,7 @@ public:
 
 	void Pop()
 	{
-		if (!m_top)
+		if (Empty())
 		{
 			throw std::logic_error("Imposible pop empty stack");
 		}
@@ -75,16 +75,15 @@ public:
 		return *this;
 	}
 
-	CStack<T>& operator=(CStack<T> && assigmentStack)
+	CStack<T>& operator=(CStack<T> && cloneStack)
 	{
-		if (this == &assigmentStack)
+		if (this == &cloneStack)
 		{
 			throw std::logic_error("Self move assigment");
 		}
 
-		m_stackSize = assigmentStack.stackSize;
-		m_top = assigmentStack.m_top;
-		assigmentStack.m_top = nullptr;
+		m_stackSize = std::move(cloneStack.stackSize);
+		m_top = std::move(cloneStack.m_top);
 
 		return *this;
 	}
