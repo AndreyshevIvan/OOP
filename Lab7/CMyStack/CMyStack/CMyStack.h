@@ -28,7 +28,7 @@ public:
 
 	void Push(T const& element)
 	{
-		std::shared_ptr<Node> newNode(new Node);
+		auto newNode = std::make_shared<Node>();
 		newNode->content = element;
 		if (!Empty())
 		{
@@ -56,7 +56,7 @@ public:
 			throw std::logic_error("Imposible pop empty stack");
 		}
 
-		std::shared_ptr<Node> newNode(new Node);
+		auto newNode = std::make_shared<Node>();
 		newNode = m_top->next;
 		m_top.reset();
 		m_top = newNode;
