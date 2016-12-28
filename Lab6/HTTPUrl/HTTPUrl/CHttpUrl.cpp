@@ -5,7 +5,6 @@
 using namespace std;
 
 CHttpUrl::CHttpUrl(string const& url)
-try
 {
 	size_t pos = 0;
 	ParseProtocol(url, pos);
@@ -38,10 +37,6 @@ try
 	}
 
 	m_url = protocolStr + m_domain + portStr + m_document;
-}
-catch (CUrlParsingError const& e)
-{
-	throw CUrlParsingError(e);
 }
 
 void CHttpUrl::ParseProtocol(string const& url, size_t& pos)

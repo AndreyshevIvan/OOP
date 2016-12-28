@@ -126,7 +126,7 @@ BOOST_AUTO_TEST_SUITE(Exceptions_are_thrown_when_)
 		BOOST_REQUIRE_THROW(CHttpUrl("ftp://domain/document"), std::invalid_argument);
 	}
 
-	BOOST_AUTO_TEST_CASE(construct_url_with_four_args_and_protocol_are_empty)
+	BOOST_AUTO_TEST_CASE(construct_url_with_four_args_and_domain_are_empty)
 	{
 		BOOST_REQUIRE_THROW(CHttpUrl("", "", Protocol::HTTP, 300), std::invalid_argument);
 	}
@@ -139,6 +139,7 @@ BOOST_AUTO_TEST_SUITE(Exceptions_are_thrown_when_)
 	
 	BOOST_AUTO_TEST_CASE(invalid_domain_or_they_absent)
 	{
+		BOOST_REQUIRE_THROW(CHttpUrl("http:///document"), std::invalid_argument);
 		BOOST_REQUIRE_THROW(CHttpUrl("http:///document"), std::invalid_argument);
 		BOOST_REQUIRE_THROW(CHttpUrl("https://:10/document"), std::invalid_argument);
 	}
@@ -156,6 +157,11 @@ BOOST_AUTO_TEST_SUITE(Exceptions_are_thrown_when_)
 	BOOST_AUTO_TEST_CASE(port_greather_than_65535)
 	{
 		BOOST_REQUIRE_THROW(CHttpUrl("http://site.com:0/document"), std::invalid_argument);
+	}
+
+	BOOST_AUTO_TEST_CASE(domain_empty_when_cunstruct_with_two_arg)
+	{
+		BOOST_REQUIRE_THROW(CHttpUrl("", "doc"), std::invalid_argument);
 	}
 	
 BOOST_AUTO_TEST_SUITE_END()
