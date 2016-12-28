@@ -162,7 +162,6 @@ CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document)
 	size_t pos = 0;
 	ParseDocument(m_document, pos);
 
-	
 	m_protocol = Protocol::HTTP;
 	std::string protocolStr = "http://";
 	m_port = 80;

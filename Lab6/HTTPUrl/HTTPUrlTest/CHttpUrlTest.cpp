@@ -68,19 +68,31 @@ BOOST_AUTO_TEST_SUITE(Url_can_be_construct_with_)
 	}
 	BOOST_AUTO_TEST_CASE(domain_and_document_and_protocol)
 	{
-		CHttpUrl url3("vk.com", "document", Protocol::HTTP);
-		BOOST_CHECK_EQUAL(url3.GetProtocol(), Protocol::HTTP);
-		BOOST_CHECK_EQUAL(url3.GetDomain(), "vk.com");
-		BOOST_CHECK_EQUAL(url3.GetPort(), 80);
-		BOOST_CHECK_EQUAL(url3.GetDocument(), "/document");
+		CHttpUrl url1("vk.com", "document", Protocol::HTTP);
+		BOOST_CHECK_EQUAL(url1.GetProtocol(), Protocol::HTTP);
+		BOOST_CHECK_EQUAL(url1.GetDomain(), "vk.com");
+		BOOST_CHECK_EQUAL(url1.GetPort(), 80);
+		BOOST_CHECK_EQUAL(url1.GetDocument(), "/document");
+
+		CHttpUrl url2("vk.com", "document", Protocol::HTTPS);
+		BOOST_CHECK_EQUAL(url2.GetProtocol(), Protocol::HTTPS);
+		BOOST_CHECK_EQUAL(url2.GetDomain(), "vk.com");
+		BOOST_CHECK_EQUAL(url2.GetPort(), 433);
+		BOOST_CHECK_EQUAL(url2.GetDocument(), "/document");
 	}
 	BOOST_AUTO_TEST_CASE(domain_and_document_and_protocol_and_port)
 	{
-		CHttpUrl url4("vk.com", "document", Protocol::HTTPS, 500);
-		BOOST_CHECK_EQUAL(url4.GetProtocol(), Protocol::HTTPS);
-		BOOST_CHECK_EQUAL(url4.GetDomain(), "vk.com");
-		BOOST_CHECK_EQUAL(url4.GetPort(), 500);
-		BOOST_CHECK_EQUAL(url4.GetDocument(), "/document");
+		CHttpUrl url1("vk.com", "document", Protocol::HTTP, 500);
+		BOOST_CHECK_EQUAL(url1.GetProtocol(), Protocol::HTTP);
+		BOOST_CHECK_EQUAL(url1.GetDomain(), "vk.com");
+		BOOST_CHECK_EQUAL(url1.GetPort(), 500);
+		BOOST_CHECK_EQUAL(url1.GetDocument(), "/document");
+
+		CHttpUrl url2("vk.com", "document", Protocol::HTTPS, 100);
+		BOOST_CHECK_EQUAL(url2.GetProtocol(), Protocol::HTTPS);
+		BOOST_CHECK_EQUAL(url2.GetDomain(), "vk.com");
+		BOOST_CHECK_EQUAL(url2.GetPort(), 100);
+		BOOST_CHECK_EQUAL(url2.GetDocument(), "/document");
 	}
 	BOOST_AUTO_TEST_CASE(mixed_protocol_register)
 	{
