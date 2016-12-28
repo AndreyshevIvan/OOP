@@ -85,6 +85,58 @@ BOOST_AUTO_TEST_SUITE(stack_have_)
 		BOOST_CHECK(newStack.Empty());
 	}
 
+BOOST_AUTO_TEST_CASE(move_constructor)
+{
+	CStack<std::string> copiedStack;
+	copiedStack.Push("Hello");
+	copiedStack.Push("World!");
+
+	CStack<std::string> newStack = copiedStack;
+
+	BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
+	BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(assigment_operator_)
+
+	BOOST_AUTO_TEST_CASE(assign_not_empty_stack_with_empty)
+	{
+		int intNumber = 10;
+		CStack<int> emptyStack;
+		CStack<int> stackWithInt;
+		stackWithInt.Push(intNumber);
+
+		emptyStack = stackWithInt;
+
+		BOOST_CHECK(!emptyStack.Empty());
+		BOOST_CHECK_EQUAL(emptyStack.GetTop(), intNumber);
+		emptyStack.Pop();
+		BOOST_CHECK(emptyStack.Empty());
+	}
+
+	BOOST_AUTO_TEST_CASE(assign_not_empty_and_not_empty_stack)
+	{
+		CStack<int> firstStack;
+		CStack<int> secondStack;
+
+		for (int i = -10; i < 10; i++)
+		{
+			firstStack.Push(i);
+			secondStack.Push(-1 * i);
+		}
+
+		firstStack = secondStack;
+
+		while (!firstStack.Empty() && !secondStack.Empty())
+		{
+			BOOST_CHECK_EQUAL(firstStack.GetTop(), secondStack.GetTop());
+			firstStack.Pop();
+			secondStack.Pop();
+		}
+	}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
@@ -105,6 +157,18 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 		stack.Pop();
 		stack.Pop();
 		BOOST_REQUIRE_THROW(stack.Pop(), std::logic_error);
+	}
+
+	BOOST_AUTO_TEST_CASE(self_assigment)
+	{
+		CStack<float> assigmentStack;
+		BOOST_REQUIRE_THROW(assigmentStack = assigmentStack, std::logic_error);
+	}
+
+	BOOST_AUTO_TEST_CASE(self_moveing)
+	{
+		CStack<float> assigmentStack;
+		BOOST_REQUIRE_THROW(assigmentStack = assigmentStack, std::logic_error);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()

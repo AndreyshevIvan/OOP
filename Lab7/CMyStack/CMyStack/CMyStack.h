@@ -12,6 +12,20 @@ public:
 		CopyNodes(stack.m_top);
 	}
 
+	CStack(CStack<T> && otherStack)
+	{
+		if (this == &otherStack)
+		{
+			throw std::logic_error("Self moveing");
+		}
+
+		m_top = otherStack.m_top;
+		m_stackSize = otherStack.m_stackSize;
+
+		otherStack.m_top = nullptr;
+		otherStack.m_stackSize = 0;
+	}
+
 	void Push(T const& element)
 	{
 		std::shared_ptr<Node> newNode(new Node);
@@ -29,7 +43,7 @@ public:
 	{
 		if (!m_top)
 		{
-			throw std::logic_error("Imposible return content from empty empty");
+			throw std::logic_error("Imposible return content from empty stack");
 		}
 
 		return m_top->content;
@@ -47,6 +61,32 @@ public:
 		m_top.reset();
 		m_top = newNode;
 		m_stackSize--;
+	}
+
+	CStack<T>& operator=(CStack<T> const& assigmentStack)
+	{
+		if (this == &assigmentStack)
+		{
+			throw std::logic_error("Self assigment");
+		}
+
+		CopyNodes(assigmentStack.m_top);
+
+		return *this;
+	}
+
+	CStack<T>& operator=(CStack<T> && assigmentStack)
+	{
+		if (this == &assigmentStack)
+		{
+			throw std::logic_error("Self move assigment");
+		}
+
+		m_stackSize = assigmentStack.stackSize;
+		m_top = assigmentStack.m_top;
+		assigmentStack.m_top = nullptr;
+
+		return *this;
 	}
 
 	bool Empty()
