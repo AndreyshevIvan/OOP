@@ -43,3 +43,19 @@ BOOST_AUTO_TEST_CASE(can_found_max_float)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(Variable_for_the_maximum_value_)
+	
+BOOST_AUTO_TEST_CASE(does_not_change_if_the_input_vector_is_empty)
+{
+	const std::vector<Sportsman> emptyVector;
+	Sportsman maxValue = { "Name", 100.99, 199.99f };
+
+	FindMaxEx(sportsmans, maxValue, IsHeightLess);
+
+	BOOST_CHECK_EQUAL(maxValue.height, maxValue.height);
+	BOOST_CHECK_EQUAL(maxValue.name, maxValue.name);
+	BOOST_CHECK_EQUAL(maxValue.weight, maxValue.weight);
+}
+
+BOOST_AUTO_TEST_SUITE_END()

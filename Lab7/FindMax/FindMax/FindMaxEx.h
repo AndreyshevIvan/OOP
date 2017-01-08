@@ -10,6 +10,7 @@ bool FindMaxEx(std::vector<T> const& arr, T& maxValue, Less const& less)
 	}
 
 	maxValue = arr.front();
+
 	for (T const& element : arr)
 	{
 		if (less(maxValue, element))
