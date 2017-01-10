@@ -9,15 +9,16 @@ bool FindMaxEx(std::vector<T> const& arr, T& maxValue, Less const& less)
 		return false;
 	}
 
-	maxValue = arr.front();
+	auto maxElement = arr.begin();
 
-	for (T const& element : arr)
+	for (auto it = arr.begin(); it != arr.end(); it++)
 	{
-		if (less(maxValue, element))
+		if (less(*maxElement, *it))
 		{
-			maxValue = element;
+			maxElement = it;
 		}
 	}
+	maxValue = *maxElement;
 
 	return true;
 }
