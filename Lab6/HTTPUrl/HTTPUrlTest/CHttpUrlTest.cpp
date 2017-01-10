@@ -28,11 +28,13 @@ BOOST_AUTO_TEST_SUITE(Url_can_return_)
 
 	BOOST_AUTO_TEST_CASE(full_information_about_url)
 	{
-		std::string refStr = "URL: http://vk.com:77/doc\n\tProtocol: http\n\tDomain: vk.com\n\tPort: 77\n\tDocument: /doc\n";
-		std::ofstream file("output.txt");
-		std::string url = "http://vk.com:77/doc";
-		file << Info(CHttpUrl(url));
-		BOOST_CHECK_EQUAL(Info(CHttpUrl(url)), refStr);
+		std::string refStr1 = "URL: http://vk.com:77/doc\n\tProtocol: http\n\tDomain: vk.com\n\tPort: 77\n\tDocument: /doc\n";
+		std::string httpUrl = "http://vk.com:77/doc";
+		BOOST_CHECK_EQUAL(Info(CHttpUrl(httpUrl)), refStr1);
+
+		std::string refStr2 = "URL: https://vk.com:22/doc\n\tProtocol: https\n\tDomain: vk.com\n\tPort: 22\n\tDocument: /doc\n";
+		std::string httpsUrl = "https://vk.com:22/doc";
+		BOOST_CHECK_EQUAL(Info(CHttpUrl(httpsUrl)), refStr2);
 	}
 
 	BOOST_AUTO_TEST_CASE(url_string)

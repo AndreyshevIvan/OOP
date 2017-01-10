@@ -15,13 +15,8 @@ public:
 
 	CHttpUrl(
 		std::string const& domain,
-		std::string const& document
-	);
-
-	CHttpUrl(
-		std::string const& domain,
 		std::string const& document,
-		Protocol protocol
+		Protocol protocol = Protocol::HTTP
 	);
 
 	CHttpUrl(

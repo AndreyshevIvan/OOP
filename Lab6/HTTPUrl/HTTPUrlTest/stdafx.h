@@ -4,6 +4,7 @@
 #include <tchar.h>
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/lexical_cast.hpp>
 
 #define BOOST_TEST_INCLUDED
 #include <boost/test/unit_test.hpp>

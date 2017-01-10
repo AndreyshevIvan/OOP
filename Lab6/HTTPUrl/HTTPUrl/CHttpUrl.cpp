@@ -110,20 +110,26 @@ void CHttpUrl::ParsePort(string const& url, size_t& pos)
 		throw CUrlParsingError("Unknown port\n");
 	}
 	m_port = 0;
-	unsigned short digit = 0;
-	while (url[pos] <= '9' && url[pos] >= '0')
+
+	std::string portStr;
+	for (pos; pos < url.length(); ++pos)
 	{
-		digit = (int)url[pos] - '0';
-		if ((USHRT_MAX - digit) / 10 >= m_port)
+		if (url[pos] == '/')
 		{
-			m_port = m_port * 10 + digit;
+			break;
 		}
-		else
-		{
-			throw CUrlParsingError("Port longer than it possible\n");
-		}
-		pos++;
+		portStr += url[pos];
 	}
+
+	try
+	{
+		m_port = boost::lexical_cast<unsigned short>(portStr);
+	}
+	catch (boost::bad_lexical_cast &)
+	{
+		throw CUrlParsingError("Invalid port\n");
+	}
+
 	if (m_port == 0)
 	{
 		throw CUrlParsingError("Port is never be equal zero\n");
@@ -143,25 +149,6 @@ void CHttpUrl::ParseDocument(std::string const& url, size_t& pos)
 		pos++;
 	}
 	m_document = documentStr;
-}
-
-CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document)
-	:m_domain(domain)
-	,m_document(document)
-{
-	if (domain.empty())
-	{
-		throw CUrlParsingError("Empty domain\n");
-	}
-
-	size_t pos = 0;
-	ParseDocument(m_document, pos);
-
-	m_protocol = Protocol::HTTP;
-	std::string protocolStr = "http://";
-	m_port = 80;
-
-	m_url = protocolStr + m_domain + m_document;
 }
 
 CHttpUrl::CHttpUrl(std::string const& domain, std::string const& document, Protocol protocol)
