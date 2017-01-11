@@ -62,29 +62,29 @@ public:
 		m_stackSize--;
 	}
 
-	CStack<T>& operator=(CStack<T> const& assigmentStack)
+	CStack<T>& operator=(CStack<T> const& cloneStack)
 	{
-		if (this == &assigmentStack)
+		if (this == &cloneStack)
 		{
 			throw std::logic_error("Self assigment");
 		}
 
-		CopyNodes(assigmentStack.m_top);
+		CopyNodes(cloneStack.m_top);
 
 		return *this;
 	}
 
-	CStack<T>& operator=(CStack<T> && cloneStack)
+	CStack<T>& operator=(CStack<T> && moveStack)
 	{
-		if (this == &cloneStack)
+		if (this == &moveStack)
 		{
 			throw std::logic_error("Self move assigment");
 		}
 
-		m_stackSize = cloneStack.stackSize;
-		m_top = cloneStack.m_top;
-		cloneStack.m_top = nullptr;
-		cloneStack.stackSize = 0;
+		m_stackSize = moveStack.stackSize;
+		m_top = moveStack.m_top;
+		moveStack.m_top = nullptr;
+		moveStack.stackSize = 0;
 
 		return *this;
 	}
