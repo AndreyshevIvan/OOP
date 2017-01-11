@@ -19,9 +19,8 @@ public:
 			throw std::logic_error("Self move assigment");
 		}
 
-		m_top = std::move(cloneStack.m_top);
-		m_stackSize = std::move(cloneStack.m_stackSize);
-
+		m_top = cloneStack.m_top;
+		m_stackSize = cloneStack.m_stackSize;
 		cloneStack.m_top = nullptr;
 		cloneStack.m_stackSize = 0;
 	}
@@ -82,8 +81,10 @@ public:
 			throw std::logic_error("Self move assigment");
 		}
 
-		m_stackSize = std::move(cloneStack.stackSize);
-		m_top = std::move(cloneStack.m_top);
+		m_stackSize = cloneStack.stackSize;
+		m_top = cloneStack.m_top;
+		cloneStack.m_top = nullptr;
+		cloneStack.stackSize = 0;
 
 		return *this;
 	}

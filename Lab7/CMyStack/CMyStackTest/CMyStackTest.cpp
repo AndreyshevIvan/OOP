@@ -87,14 +87,10 @@ BOOST_AUTO_TEST_SUITE(stack_have_)
 
 BOOST_AUTO_TEST_CASE(move_constructor)
 {
-	CStack<std::string> copiedStack;
-	copiedStack.Push("Hello");
-	copiedStack.Push("World!");
+	CStack<std::string> newStack = CStack<std::string>();
+	newStack.Push("string");
 
-	CStack<std::string> newStack = copiedStack;
-
-	BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
-	BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
+	BOOST_CHECK_EQUAL(newStack.GetTop(), "string");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

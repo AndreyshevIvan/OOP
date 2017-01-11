@@ -1,8 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-#pragma once
-
 #include <new>
 #include <algorithm>
 
@@ -33,16 +31,15 @@ public:
 
 	void Append(const T & value)
 	{
-		if (m_end == m_endOfCapacity) // no free space
+		if (m_end == m_endOfCapacity)
 		{
 			size_t newCapacity = std::max(1u, GetCapacity() * 2);
 
 			auto newBegin = RawAlloc(newCapacity);
-			T *newEnd = newBegin;
+			T * newEnd = newBegin;
 			try
 			{
 				CopyItems(m_begin, m_end, newBegin, newEnd);
-				// Конструируем копию value по адресу newItemLocation
 				new (newEnd)T(value);
 				++newEnd;
 			}
@@ -53,14 +50,13 @@ public:
 			}
 			DeleteItems(m_begin, m_end);
 
-			// Переключаемся на использование нового хранилища элементов
 			m_begin = newBegin;
 			m_end = newEnd;
 			m_endOfCapacity = m_begin + newCapacity;
 		}
-		else // has free space
+		else
 		{
-			new (m_end) T(value);
+			new (m_end)T(value);
 			++m_end;
 		}
 	}
@@ -86,6 +82,7 @@ public:
 	{
 		return m_endOfCapacity - m_begin;
 	}
+
 	~CMyArray()
 	{
 		DeleteItems(m_begin, m_end);
@@ -93,30 +90,23 @@ public:
 private:
 	static void DeleteItems(T *begin, T *end)
 	{
-		// Разрушаем старые элементы
 		DestroyItems(begin, end);
-		// Освобождаем область памяти для их хранения
 		RawDealloc(begin);
 	}
 
-	// Копирует элементы из текущего вектора в to, возвращает newEnd
 	static void CopyItems(const T *srcBegin, T *srcEnd, T * const dstBegin, T * & dstEnd)
 	{
 		for (dstEnd = dstBegin; srcBegin != srcEnd; ++srcBegin, ++dstEnd)
 		{
-			// Construct "T" at "dstEnd" as a copy of "*begin"
 			new (dstEnd)T(*srcBegin);
 		}
 	}
 
 	static void DestroyItems(T *from, T *to)
 	{
-		// dst - адрес объект, при конструирование которого было выброшено исключение
-		// to - первый скорнструированный объект
 		while (to != from)
 		{
 			--to;
-			// явно вызываем деструктор для шаблонного типа T
 			to->~T();
 		}
 	}
