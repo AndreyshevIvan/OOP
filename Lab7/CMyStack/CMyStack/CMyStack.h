@@ -1,6 +1,7 @@
 #pragma once
 #include "stdafx.h"
 
+
 template <typename T>
 class CStack
 {
@@ -9,7 +10,7 @@ public:
 
 	CStack(CStack<T> const& stack)
 	{
-		CopyNodes(stack.m_top);
+		CopyNodes(stack);
 	}
 
 	CStack(CStack<T> && cloneStack)
@@ -29,6 +30,7 @@ public:
 	{
 		auto newNode = std::make_shared<Node>();
 		newNode->content = element;
+
 		if (!Empty())
 		{
 			newNode->next = m_top;
@@ -38,7 +40,7 @@ public:
 		m_stackSize++;
 	}
 
-	T GetTop()
+	T GetTop() const
 	{
 		if (Empty())
 		{
@@ -69,7 +71,7 @@ public:
 			throw std::logic_error("Self assigment");
 		}
 
-		CopyNodes(cloneStack.m_top);
+		CopyNodes(cloneStack);
 
 		return *this;
 	}
@@ -89,7 +91,7 @@ public:
 		return *this;
 	}
 
-	bool Empty()
+	bool Empty() const
 	{
 		return (m_stackSize == 0);
 	}
@@ -105,18 +107,34 @@ public:
 private:
 	struct Node
 	{
-		T content;
+		T content = T();
 		std::shared_ptr<Node> next = nullptr;
-	}
+	};
 
-	void CopyNodes(std::shared_ptr<Node> const& copiedNode)
+	void CopyNodes(CStack<T> const& stack)
 	{
-		if (copiedNode->next)
+		if (!stack.Empty())
 		{
-			CopyNodes(copiedNode->next);
-		}
+			std::shared_ptr<Node> pCopiedNode = stack.m_top;
+			
+			Push(pCopiedNode->content);
+			pCopiedNode = pCopiedNode->next;
 
-		Push(copiedNode->content);
+			m_top->next = std::make_shared<Node>();
+			auto pPasteNode = m_top->next;
+
+			while (pCopiedNode != nullptr)
+			{
+				pPasteNode->content = pCopiedNode->content;
+
+				pCopiedNode = pCopiedNode->next;
+
+				pPasteNode->next = std::make_shared<Node>();
+				pPasteNode = pPasteNode->next;
+			}
+
+			m_stackSize = stack.m_stackSize;
+		}
 	}
 
 	size_t m_stackSize = 0;

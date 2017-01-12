@@ -14,12 +14,14 @@ public:
 	std::pair<int, CRational> ToCompoundFraction() const;
 
 	const CRational operator-() const;
+
 	const CRational operator+() const;
 
 	CRational& operator+=(CRational const& value);
 	CRational& operator-=(CRational const& value);
 	CRational& operator*=(CRational const& value);
 	CRational& operator/=(CRational const& value);
+
 private:
 	int m_numerator;
 	int m_denominator;

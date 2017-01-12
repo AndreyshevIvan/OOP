@@ -5,6 +5,7 @@ CStack<std::string> strStack;
 CStack<int> intStack;
 CStack<float> floatStack;
 
+
 BOOST_AUTO_TEST_SUITE(stack_can_push_and_return_)
 
 	BOOST_AUTO_TEST_CASE(string)
@@ -76,7 +77,7 @@ BOOST_AUTO_TEST_SUITE(stack_have_)
 		copiedStack.Push("World!");
 
 		CStack<std::string> newStack(copiedStack);
-		
+
 		BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
 		BOOST_CHECK_EQUAL(copiedStack.GetTop(), newStack.GetTop());
 		copiedStack.Clear();
@@ -119,8 +120,8 @@ BOOST_AUTO_TEST_SUITE(assigment_operator_)
 
 		for (int i = -10; i < 10; i++)
 		{
-			firstStack.Push(i);
-			secondStack.Push(-1 * i);
+			firstStack.Push(1);
+			secondStack.Push(1);
 		}
 
 		firstStack = secondStack;
@@ -165,6 +166,29 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 	{
 		CStack<float> assigmentStack;
 		BOOST_REQUIRE_THROW(assigmentStack = assigmentStack, std::logic_error);
+	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
+BOOST_AUTO_TEST_SUITE(Mock_test)
+
+	struct ThrowableClass
+	{
+		ThrowableClass(bool isThrow = true)
+		{
+			if (isThrow)
+			{
+				throw std::logic_error("ThrowableClass thorw the exception!\n");
+			}
+		}
+	};
+
+	BOOST_AUTO_TEST_CASE(copy_stack)
+	{
+		ThrowableClass notThrowCopy(false);
+		CStack<ThrowableClass> stack;
+		stack.Push(notThrowCopy);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
