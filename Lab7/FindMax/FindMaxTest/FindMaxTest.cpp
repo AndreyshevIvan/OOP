@@ -10,6 +10,8 @@ public:
 		,m_number(number)
 	{
 	}
+
+
 	int m_number;
 	bool m_doThrow;
 };

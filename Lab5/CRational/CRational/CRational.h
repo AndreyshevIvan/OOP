@@ -11,16 +11,15 @@ public:
 	int GetNumerator() const;
 	int GetDenominator() const;
 	double ToDouble() const;
+	std::pair<int, CRational> ToCompoundFraction() const;
 
 	const CRational operator-() const;
 	const CRational operator+() const;
 
-	const CRational& operator+=(CRational const& value);
-	const CRational& operator-=(CRational const& value);
-	const CRational& operator*=(CRational const& value);
-	const CRational& operator/=(CRational const& value);
-
-	void ToMixedNumeral(int& integer, CRational& rational);
+	CRational& operator+=(CRational const& value);
+	CRational& operator-=(CRational const& value);
+	CRational& operator*=(CRational const& value);
+	CRational& operator/=(CRational const& value);
 private:
 	int m_numerator;
 	int m_denominator;

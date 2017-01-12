@@ -19,21 +19,26 @@ bool IsRationalEqual(CRational const& CheckRational, int expectedNumerator, int 
 	return true;
 }
 
-BOOST_AUTO_TEST_SUITE(construct_rational_numbers)
+struct Rational
+{
+	CRational rational = CRational(5, 7);
+};
 
-	BOOST_AUTO_TEST_CASE(can_be_constructed_without_numerator_and_denominator)
+BOOST_AUTO_TEST_SUITE(Constructor_of_rational_numbers_can_work_)
+
+	BOOST_AUTO_TEST_CASE(without_numerator_and_denominator)
 	{
 		BOOST_CHECK(IsRationalEqual(CRational(), 0, 1));
 	}
 
-	BOOST_AUTO_TEST_CASE(can_be_constructed_without_denominator)
+	BOOST_AUTO_TEST_CASE(with_numerator_only)
 	{
 		BOOST_CHECK(IsRationalEqual(CRational(30), 30, 1));
 		BOOST_CHECK(IsRationalEqual(CRational(0), 0, 1));
 		BOOST_CHECK(IsRationalEqual(CRational(-150), -150, 1));
 	}
 
-	BOOST_AUTO_TEST_CASE(create_rational_with_denominator_and_numerator)
+	BOOST_AUTO_TEST_CASE(with_numerator_and_denominator)
 	{
 		BOOST_CHECK(IsRationalEqual(CRational(0, 0), 0, 1));
 		BOOST_CHECK(IsRationalEqual(CRational(10, 2), 5, 1));
@@ -43,7 +48,11 @@ BOOST_AUTO_TEST_SUITE(construct_rational_numbers)
 		BOOST_CHECK(IsRationalEqual(CRational(2, 0), 0, 1));
 	}
 
-	BOOST_AUTO_TEST_CASE(rational_number_can_convert_to_double)
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(Rational_numbers_can_)
+
+	BOOST_AUTO_TEST_CASE(convert_to_double)
 	{
 		double positiveDouble = 5 / 3;
 		BOOST_CHECK(CRational(5, 3).ToDouble() == positiveDouble);
@@ -55,50 +64,65 @@ BOOST_AUTO_TEST_SUITE(construct_rational_numbers)
 		BOOST_CHECK(CRational(1, -3).ToDouble() == negativeDouble);
 	}
 
+	BOOST_AUTO_TEST_CASE(convert_to_compound_fraction)
+	{
+		CRational rational(18, 3);
+		std::pair<int, CRational> positiveCompoundFraction = rational.ToCompoundFraction();
+		BOOST_CHECK_EQUAL(positiveCompoundFraction.first, 6);
+		BOOST_CHECK_EQUAL(positiveCompoundFraction.second, CRational(0, 1));
+
+		rational = CRational(-31, 5);
+		std::pair<int, CRational> negativeCompoundFraction = rational.ToCompoundFraction();
+		BOOST_CHECK_EQUAL(negativeCompoundFraction.first, -6);
+		BOOST_CHECK_EQUAL(negativeCompoundFraction.second, CRational(-1, 5));
+
+		rational = CRational(0, 100);
+		std::pair<int, CRational> zeroCompoundFraction = rational.ToCompoundFraction();
+		BOOST_CHECK_EQUAL(zeroCompoundFraction.first, 0);
+		BOOST_CHECK_EQUAL(zeroCompoundFraction.second, CRational(0, 1));
+	}
+
+	BOOST_AUTO_TEST_CASE(rational_must_be_able_to_create_compound_fraction_from_a_constant)
+	{
+		const CRational rational(10, 3);
+		std::pair<int, CRational> compoundFraction = rational.ToCompoundFraction();
+	}
+
 BOOST_AUTO_TEST_SUITE_END()
 
-BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
+BOOST_AUTO_TEST_SUITE(Rational_numbers_have_)
 
-	BOOST_AUTO_TEST_CASE(check_unary_plus)
+	BOOST_AUTO_TEST_CASE(unary_plus_operator)
 	{
 		CRational const num1(-2, 4);
 		CRational num2 = +num1;
 		BOOST_CHECK(IsRationalEqual(num1, num2.GetNumerator(), num2.GetDenominator()));
 	}
 
-	BOOST_AUTO_TEST_CASE(check_unary_minus)
+	BOOST_AUTO_TEST_CASE(unary_minus_operator)
 	{
 		CRational const num1(1, 3);
 		CRational num2 = -num1;
 		BOOST_CHECK(IsRationalEqual(num1, -num2.GetNumerator(), num2.GetDenominator()));
 	}
 
-	BOOST_AUTO_TEST_CASE(check_addition_of_two_rational_numbers)
-	{
-		BOOST_CHECK(IsRationalEqual(CRational(1, 3) + CRational(2, 3), 1, 1));
-		BOOST_CHECK(IsRationalEqual(CRational(-1, 3) + CRational(4, 3), 1, 1));
-		BOOST_CHECK(IsRationalEqual(CRational(0, 0) + CRational(0, 0), 0, 1));
-		BOOST_CHECK(IsRationalEqual(CRational(-10, 2) + CRational(10, 2), 0, 1));
-	}
-
-	struct Rational
-	{
-		CRational rational = CRational(5, 7);
-	};
 	BOOST_FIXTURE_TEST_SUITE(binary_plus_with, Rational)
 
-		BOOST_AUTO_TEST_CASE(rational_with_rational)
+		BOOST_AUTO_TEST_CASE(rational_and_rational)
 		{
-			BOOST_CHECK(IsRationalEqual(rational + rational, 10, 7));
+			BOOST_CHECK(IsRationalEqual(CRational(1, 3) + CRational(2, 3), 1, 1));
+			BOOST_CHECK(IsRationalEqual(CRational(-1, 3) + CRational(4, 3), 1, 1));
+			BOOST_CHECK(IsRationalEqual(CRational(0, 0) + CRational(0, 0), 0, 1));
+			BOOST_CHECK(IsRationalEqual(CRational(-10, 2) + CRational(10, 2), 0, 1));
 		}
 
-		BOOST_AUTO_TEST_CASE(int_with_rational)
+		BOOST_AUTO_TEST_CASE(int_and_rational)
 		{
 			int iNum = 4;
 			BOOST_CHECK(IsRationalEqual(iNum + rational, 33, 7));
 		}
 
-		BOOST_AUTO_TEST_CASE(rational_with_int)
+		BOOST_AUTO_TEST_CASE(rational_and_int)
 		{
 			int iNum = -2;
 			BOOST_CHECK(IsRationalEqual(rational + iNum, -9, 7));
@@ -175,57 +199,81 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 
 	BOOST_AUTO_TEST_SUITE_END()
 
-	BOOST_AUTO_TEST_CASE(increase_the_number_on_rational_or_int)
-	{
-		CRational rational(3, 5);
-		CRational increaseRational(7, 5);
-		rational += increaseRational;
-		BOOST_CHECK(IsRationalEqual(rational, 2, 1));
+	BOOST_FIXTURE_TEST_SUITE(increase_itself_on, Rational)
 
-		int increaseInt = 4;
-		rational += increaseInt;
-		BOOST_CHECK(IsRationalEqual(rational, 6, 1));
-	}
+		BOOST_AUTO_TEST_CASE(rational_number)
+		{
+			CRational increaseRational(3, 7);
+			rational += increaseRational;
+			BOOST_CHECK(IsRationalEqual(rational, 8, 7));
+		}
 
-	BOOST_AUTO_TEST_CASE(reducing_the_number_on_rational_or_int)
-	{
-		CRational rational(3, 5);
-		CRational reducingRational(2, 5);
-		rational -= reducingRational;
-		BOOST_CHECK(IsRationalEqual(rational, 1, 5));
+		BOOST_AUTO_TEST_CASE(int_number)
+		{
+			int increaseInt = 4;
+			rational += increaseInt;
+			BOOST_CHECK(IsRationalEqual(rational, 33, 7));
+		}
 
-		int reducingInt = 2;
-		rational -= reducingInt;
-		BOOST_CHECK(IsRationalEqual(rational, -9, 5));
-	}
+	BOOST_AUTO_TEST_SUITE_END()
 
-	BOOST_AUTO_TEST_CASE(multiply_the_number_on_rational_or_int)
-	{
-		CRational rational(2, 3);
-		CRational multiplyRational(7, 5);
-		rational *= multiplyRational;
-		BOOST_CHECK(IsRationalEqual(rational, 14, 15));
+	BOOST_FIXTURE_TEST_SUITE(reduction_itself_on, Rational)
 
-		int multiplyInt = 4;
-		rational *= multiplyInt;
-		BOOST_CHECK(IsRationalEqual(rational, 56, 15));
-	}
+		BOOST_AUTO_TEST_CASE(rational_number)
+		{
+			CRational reducingRational(2, 7);
+			rational -= reducingRational;
+			BOOST_CHECK(IsRationalEqual(rational, 3, 7));
+		}
 
-	BOOST_AUTO_TEST_CASE(devide_the_number_on_rational_or_int)
-	{
-		CRational rational(3, 5);
-		CRational devideRational(2, 5);
-		rational /= devideRational;
-		BOOST_CHECK(IsRationalEqual(rational, 3, 2));
+		BOOST_AUTO_TEST_CASE(int_number)
+		{
+			int reducingInt = 2;
+			rational -= reducingInt;
+			BOOST_CHECK(IsRationalEqual(rational, -9, 7));
+		}
 
-		int devideInt = 2;
-		rational /= devideInt;
-		BOOST_CHECK(IsRationalEqual(rational, 3, 4));
-	}
+	BOOST_AUTO_TEST_SUITE_END()
 
-	BOOST_FIXTURE_TEST_SUITE(check_boolean_operators, Rational)
+	BOOST_FIXTURE_TEST_SUITE(multiplication_itself_on, Rational)
 
-		BOOST_AUTO_TEST_CASE(check_equality_of_two_rational_numbers)
+		BOOST_AUTO_TEST_CASE(rational_number)
+		{
+			CRational multiplyRational(5, 7);
+			rational *= multiplyRational;
+			BOOST_CHECK(IsRationalEqual(rational, 25, 49));
+		}
+
+		BOOST_AUTO_TEST_CASE(int_number)
+		{
+			int multiplyInt = 4;
+			rational *= multiplyInt;
+			BOOST_CHECK(IsRationalEqual(rational, 20, 7));
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_FIXTURE_TEST_SUITE(division_itself_on, Rational)
+
+		BOOST_AUTO_TEST_CASE(rational_number)
+		{
+			CRational divisionRational(2, 5);
+			rational /= divisionRational;
+			BOOST_CHECK(IsRationalEqual(rational, 25, 14));
+		}
+
+		BOOST_AUTO_TEST_CASE(int_number)
+		{
+			int multiplyInt = 4;
+			rational *= multiplyInt;
+			BOOST_CHECK(IsRationalEqual(rational, 20, 7));
+		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_FIXTURE_TEST_SUITE(boolean_operators, Rational)
+
+		BOOST_AUTO_TEST_CASE(equality_operator)
 		{
 			int intNum = 4;
 			BOOST_CHECK(rational == rational);
@@ -235,7 +283,7 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(intNum == CRational(80, 20));
 		}
 
-		BOOST_AUTO_TEST_CASE(check_not_equality_of_two_rational_numbers)
+		BOOST_AUTO_TEST_CASE(not_equality_operator)
 		{
 			int intNum = 7;
 			CRational intNumInRat = CRational(49, 7);
@@ -247,7 +295,7 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(!(intNumInRat != intNum));
 		}
 
-		BOOST_AUTO_TEST_CASE(checking_less_than_operator)
+		BOOST_AUTO_TEST_CASE(less_than_operator)
 		{
 			int intNumber = 2;
 			CRational majorRat = rational + CRational(6, 7);
@@ -260,7 +308,7 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(majorRat < intNumber);
 		}
 
-		BOOST_AUTO_TEST_CASE(checking_less_than_or_equal_operator)
+		BOOST_AUTO_TEST_CASE(than_or_equal_operator)
 		{
 			int intNumber = 4;
 			CRational majorRat = rational + CRational(2, 7);
@@ -273,7 +321,7 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(minorRat <= majorRat);
 		}
 
-		BOOST_AUTO_TEST_CASE(checking_more_than_operator)
+		BOOST_AUTO_TEST_CASE(more_than_operator)
 		{
 			int intNumber = 5;
 			CRational majorRat = rational + CRational(13, 2);
@@ -285,7 +333,7 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(!(rational > rational));
 		}
 
-		BOOST_AUTO_TEST_CASE(checking_more_than_or_equal_operator)
+		BOOST_AUTO_TEST_CASE(more_than_or_equal_operator)
 		{
 			int intNumber = 5;
 			CRational majorRat = rational + CRational(13, 2);
@@ -296,6 +344,10 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			BOOST_CHECK(intNumber >= rational);
 			BOOST_CHECK(majorRat >= intNumber);
 		}
+
+	BOOST_AUTO_TEST_SUITE_END()
+
+	BOOST_FIXTURE_TEST_SUITE(stream_operatrs, Rational)
 
 		BOOST_AUTO_TEST_CASE(output_operator_can_write_rational_number)
 		{
@@ -326,48 +378,22 @@ BOOST_AUTO_TEST_SUITE(test_operators_for_rational_numbers)
 			invalidInput >> rational;
 			BOOST_CHECK(invalidInput.failbit);
 		}
-
-		BOOST_AUTO_TEST_CASE(convert_to_mixed_numeral)
-		{
-			rational = CRational(18, 3);
-			int number;
-			CRational newRat;
-
-			rational.ToMixedNumeral(number, newRat);
-			BOOST_CHECK(number == 6);
-			BOOST_CHECK(IsRationalEqual(newRat, 0, 1));
-
-			rational = CRational(-31, 19);
-			rational.ToMixedNumeral(number, newRat);
-			BOOST_CHECK(number == -1);
-			BOOST_CHECK(IsRationalEqual(newRat, -12, 19));
-
-			rational = CRational(0, 100);
-			rational.ToMixedNumeral(number, newRat);
-			BOOST_CHECK(number == 0);
-			BOOST_CHECK(IsRationalEqual(newRat, 0, 1));
-		}
-
-		BOOST_AUTO_TEST_CASE(adding_assignment_must_be_composable)
-		{
-			{
-				int x = 3, y = 5;
-				(x += y) += y;
-			}
-			{
-				CRational x = 3, y = 5;
-				(x += y) += y;
-			}
-		}
-
-		BOOST_AUTO_TEST_CASE(rational_must_be_able_to_create_compound_fraction_from_a_constant)
-		{
-			int intPart;
-			CRational fractPart;
-			const CRational r(10, 3);
-			r.ToMixedNumeral(intPart, fractPart);
-		}
-
+	
 	BOOST_AUTO_TEST_SUITE_END()
 
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(Others)
+
+	BOOST_AUTO_TEST_CASE(adding_assignment_must_be_composable)
+	{
+		{
+			int x = 3, y = 5;
+			(x += y) += y;
+		}
+		{
+			CRational x = 3, y = 5;
+			(x += y) += y;
+		}
+	}
 BOOST_AUTO_TEST_SUITE_END()

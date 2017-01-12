@@ -105,9 +105,9 @@ public:
 private:
 	struct Node
 	{
-		T content = T();
+		T content;
 		std::shared_ptr<Node> next = nullptr;
-	};
+	}
 
 	void CopyNodes(std::shared_ptr<Node> const& copiedNode)
 	{

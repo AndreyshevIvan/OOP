@@ -109,28 +109,28 @@ CRational const operator/(CRational const& firstValue, CRational const& secondVa
 	return CRational(numerator, denominator) * firstValue;
 }
 
-const CRational& CRational::operator+=(CRational const& value)
+CRational& CRational::operator+=(CRational const& value)
 {
 	*this = *this + value;
 
 	return *this;
 }
 
-const CRational& CRational::operator-=(CRational const& value)
+CRational& CRational::operator-=(CRational const& value)
 {
 	*this += -value;
 
 	return *this;
 }
 
-const CRational& CRational::operator*=(CRational const& value)
+CRational& CRational::operator*=(CRational const& value)
 {
 	*this = *this * value;
 
 	return *this;
 }
 
-const CRational& CRational::operator/=(CRational const& value)
+CRational& CRational::operator/=(CRational const& value)
 {
 	*this = *this / value;
 
@@ -167,7 +167,7 @@ bool operator<=(CRational const& firstValue, CRational const& secondValue)
 
 bool operator>(CRational const& firstValue, CRational const& secondValue)
 {
-	return !(firstValue < secondValue) && !(firstValue == secondValue);
+	return !(firstValue <= secondValue);
 }
 
 bool operator>=(CRational const& firstValue, CRational const& secondValue)
@@ -198,29 +198,38 @@ std::istream& operator>>(std::istream& input, CRational& rational)
 	return input;
 }
 
-void CRational::ToMixedNumeral(int& integer, CRational& rational)
+std::pair<int, CRational> CRational::ToCompoundFraction() const
 {
+	std::pair<int, CRational> result;
+
 	bool isNumberNegative = false;
+
 	int numerator = this->GetNumerator();
 	int denominator = this->GetDenominator();
+	int intPart = 0;
+	
 	if (numerator < 0)
 	{
 		isNumberNegative = true;
 		numerator = abs(numerator);
 	}
-	integer = 0;
 
 	while (numerator >= denominator)
 	{
 		numerator -= denominator;
-		integer++;
+		intPart++;
 	}
 
 	if (isNumberNegative)
 	{
-		integer = -integer;
+		intPart = -intPart;
 		numerator = -numerator;
 	}
 
-	rational = CRational(numerator, denominator);
+	CRational rationalPart(numerator, denominator);
+	
+	result.first = intPart;
+	result.second = rationalPart;
+
+	return result;
 }
