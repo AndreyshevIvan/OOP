@@ -160,7 +160,7 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 	BOOST_AUTO_TEST_CASE(self_assigment)
 	{
 		CStack<float> assigmentStack;
-		BOOST_REQUIRE_THROW(assigmentStack = assigmentStack, std::logic_error);
+		BOOST_CHECK_NO_THROW(assigmentStack = assigmentStack);
 	}
 
 	BOOST_AUTO_TEST_CASE(self_moveing)
@@ -171,6 +171,22 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 		moveingStack = CStack<float>(moveingStack);
 		BOOST_CHECK_EQUAL(moveingStack.GetTop(), number);
 	}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+BOOST_AUTO_TEST_SUITE(Destroy_CStack)
+
+BOOST_AUTO_TEST_CASE(without_stack_overflow)
+{
+	CStack<float> floatStack;
+	float fNum = 13.33f;
+	size_t elemCount = 20000;
+
+	for (size_t i = 0; i < elemCount; i++)
+	{
+		floatStack.Push(fNum);
+	}
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 

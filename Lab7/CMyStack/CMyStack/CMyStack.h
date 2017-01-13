@@ -44,37 +44,36 @@ public:
 	{
 		if (!Empty())
 		{
-			auto newNode = std::make_shared<Node>();
-			newNode = m_top->next;
-			m_top.reset();
-			m_top = newNode;
+			m_top->content.~T();
+			m_top = m_top->next;
 			m_stackSize--;
 		}
 	}
 
 	CStack<T>& operator=(CStack<T> const& cloneStack)
 	{
-		if (this == &cloneStack)
+		if (this != &cloneStack)
 		{
-			throw std::logic_error("Self assigment");
-		}
+			if (!Empty())
+			{
+				Clear();
+			}
 
-		CopyNodes(cloneStack);
+			CopyNodes(cloneStack);
+		}
 
 		return *this;
 	}
 
 	CStack<T>& operator=(CStack<T> && moveStack)
 	{
-		if (this == &moveStack)
+		if (this != &moveStack)
 		{
-			throw std::logic_error("Self move assigment");
+			m_stackSize = moveStack.m_stackSize;
+			m_top = moveStack.m_top;
+			moveStack.m_top = nullptr;
+			moveStack.m_stackSize = 0;
 		}
-
-		m_stackSize = moveStack.m_stackSize;
-		m_top = moveStack.m_top;
-		moveStack.m_top = nullptr;
-		moveStack.m_stackSize = 0;
 
 		return *this;
 	}
@@ -91,6 +90,11 @@ public:
 			m_top->content.~T();
 			Pop();
 		}
+	}
+
+	~CStack()
+	{
+		Clear();
 	}
 
 private:
