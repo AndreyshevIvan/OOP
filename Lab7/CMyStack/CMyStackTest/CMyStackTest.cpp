@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "..\CMyStack\CMyStack.h"
+#include <list>
 
 CStack<std::string> strStack;
 CStack<int> intStack;
@@ -170,25 +171,28 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
+/*
 BOOST_AUTO_TEST_SUITE(Mock_test)
 
-	struct ThrowableClass
+	class ThrowableClass
 	{
+	public:
 		ThrowableClass(bool isThrow = true)
 		{
 			if (isThrow)
 			{
-				throw std::logic_error("ThrowableClass thorw the exception!\n");
+				throw std::logic_error("ThrowableClass throw the exception!\n");
 			}
 		}
 	};
 
 	BOOST_AUTO_TEST_CASE(copy_stack)
 	{
+		CStack<ThrowableClass*> sTack;
 		ThrowableClass notThrowCopy(false);
-		CStack<ThrowableClass> stack;
-		stack.Push(notThrowCopy);
+
+		BOOST_REQUIRE_THROW(sTack.Push(&ThrowableClass(false)), std::logic_error);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
+*/
