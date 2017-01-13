@@ -25,12 +25,7 @@ public:
 	{
 		auto newNode = std::make_shared<Node>();
 		newNode->content = element;
-
-		if (!Empty())
-		{
-			newNode->next = m_top;
-		}
-
+		newNode->next = m_top;
 		m_top = newNode;
 		m_stackSize++;
 	}
@@ -47,16 +42,14 @@ public:
 
 	void Pop()
 	{
-		if (Empty())
+		if (!Empty())
 		{
-			throw std::logic_error("Imposible pop empty stack");
+			auto newNode = std::make_shared<Node>();
+			newNode = m_top->next;
+			m_top.reset();
+			m_top = newNode;
+			m_stackSize--;
 		}
-
-		auto newNode = std::make_shared<Node>();
-		newNode = m_top->next;
-		m_top.reset();
-		m_top = newNode;
-		m_stackSize--;
 	}
 
 	CStack<T>& operator=(CStack<T> const& cloneStack)
