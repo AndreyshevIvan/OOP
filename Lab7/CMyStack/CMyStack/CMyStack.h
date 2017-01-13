@@ -100,6 +100,7 @@ public:
 	{
 		while(!Empty())
 		{
+			m_top->content.~T();
 			Pop();
 		}
 	}
@@ -107,7 +108,7 @@ public:
 private:
 	struct Node
 	{
-		T content = T();
+		T content;// = T();
 		std::shared_ptr<Node> next = nullptr;
 	};
 

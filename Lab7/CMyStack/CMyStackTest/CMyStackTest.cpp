@@ -188,10 +188,9 @@ BOOST_AUTO_TEST_SUITE(Mock_test)
 
 	BOOST_AUTO_TEST_CASE(copy_stack)
 	{
-		CStack<ThrowableClass*> sTack;
+		CStack<ThrowableClass> sTack;
 		ThrowableClass notThrowCopy(false);
-
-		BOOST_REQUIRE_THROW(sTack.Push(&ThrowableClass(false)), std::logic_error);
+		BOOST_REQUIRE_THROW(sTack.Push(notThrowCopy), std::logic_error);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
