@@ -165,19 +165,21 @@ BOOST_AUTO_TEST_SUITE(stack_can_throw_exception_when_)
 
 	BOOST_AUTO_TEST_CASE(self_moveing)
 	{
-		CStack<float> assigmentStack;
-		BOOST_REQUIRE_THROW(assigmentStack = assigmentStack, std::logic_error);
+		float number = 0.33f;
+		CStack<float> moveingStack;
+		moveingStack.Push(number);
+		moveingStack = CStack<float>(moveingStack);
+		BOOST_CHECK_EQUAL(moveingStack.GetTop(), number);
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
 
-/*
 BOOST_AUTO_TEST_SUITE(Mock_test)
 
 	class ThrowableClass
 	{
 	public:
-		ThrowableClass(bool isThrow = true)
+		ThrowableClass(bool isThrow)
 		{
 			if (isThrow)
 			{
@@ -194,4 +196,3 @@ BOOST_AUTO_TEST_SUITE(Mock_test)
 	}
 
 BOOST_AUTO_TEST_SUITE_END()
-*/

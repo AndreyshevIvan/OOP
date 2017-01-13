@@ -15,11 +15,6 @@ public:
 
 	CStack(CStack<T> && cloneStack)
 	{
-		if (this == &cloneStack)
-		{
-			throw std::logic_error("Self move assigment");
-		}
-
 		m_top = cloneStack.m_top;
 		m_stackSize = cloneStack.m_stackSize;
 		cloneStack.m_top = nullptr;
@@ -83,10 +78,10 @@ public:
 			throw std::logic_error("Self move assigment");
 		}
 
-		m_stackSize = moveStack.stackSize;
+		m_stackSize = moveStack.m_stackSize;
 		m_top = moveStack.m_top;
 		moveStack.m_top = nullptr;
-		moveStack.stackSize = 0;
+		moveStack.m_stackSize = 0;
 
 		return *this;
 	}
@@ -108,7 +103,7 @@ public:
 private:
 	struct Node
 	{
-		T content;// = T();
+		T content;
 		std::shared_ptr<Node> next = nullptr;
 	};
 
@@ -117,21 +112,19 @@ private:
 		if (!stack.Empty())
 		{
 			std::shared_ptr<Node> pCopiedNode = stack.m_top;
-			
-			Push(pCopiedNode->content);
-			pCopiedNode = pCopiedNode->next;
 
-			m_top->next = std::make_shared<Node>();
-			auto pPasteNode = m_top->next;
+			m_top = std::make_shared<Node>();
+			auto pPasteNode = m_top;
 
-			while (pCopiedNode != nullptr)
+			pPasteNode->content = pCopiedNode->content;
+
+			while (pCopiedNode->next != nullptr)
 			{
-				pPasteNode->content = pCopiedNode->content;
-
-				pCopiedNode = pCopiedNode->next;
-
 				pPasteNode->next = std::make_shared<Node>();
 				pPasteNode = pPasteNode->next;
+
+				pCopiedNode = pCopiedNode->next;
+				pPasteNode->content = pCopiedNode->content;
 			}
 
 			m_stackSize = stack.m_stackSize;
