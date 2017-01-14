@@ -23,9 +23,7 @@ public:
 
 	void Push(T const& element)
 	{
-		auto newNode = std::make_shared<Node>();
-		newNode->content = element;
-		newNode->next = m_top;
+		auto newNode = std::make_shared<Node>(element, m_top);
 		m_top = newNode;
 		m_stackSize++;
 	}
@@ -54,11 +52,7 @@ public:
 	{
 		if (this != &cloneStack)
 		{
-			if (!Empty())
-			{
-				Clear();
-			}
-
+			Clear();
 			CopyNodes(cloneStack);
 		}
 
@@ -100,6 +94,11 @@ public:
 private:
 	struct Node
 	{
+		Node(T const& value, std::shared_ptr<Node> const& nextNode)
+			:content(value)
+			,next(nextNode)
+		{
+		}
 		T content;
 		std::shared_ptr<Node> next = nullptr;
 	};
@@ -110,18 +109,17 @@ private:
 		{
 			std::shared_ptr<Node> pCopiedNode = stack.m_top;
 
-			m_top = std::make_shared<Node>();
+			m_top = std::make_shared<Node>(*pCopiedNode);
 			auto pPasteNode = m_top;
 
 			pPasteNode->content = pCopiedNode->content;
 
 			while (pCopiedNode->next != nullptr)
 			{
-				pPasteNode->next = std::make_shared<Node>();
-				pPasteNode = pPasteNode->next;
+				pPasteNode->next = std::make_shared<Node>(*pCopiedNode->next);
 
 				pCopiedNode = pCopiedNode->next;
-				pPasteNode->content = pCopiedNode->content;
+				pPasteNode = pPasteNode->next;
 			}
 
 			m_stackSize = stack.m_stackSize;
