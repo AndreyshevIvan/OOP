@@ -11,7 +11,7 @@ CRational::CRational(int numerator, int denominator)
 		m_numerator = 0;
 		m_denominator = 1;
 	}
-	if (denominator < 0)
+	else if (denominator < 0)
 	{
 		m_numerator = -m_numerator;
 		m_denominator = -m_denominator;
